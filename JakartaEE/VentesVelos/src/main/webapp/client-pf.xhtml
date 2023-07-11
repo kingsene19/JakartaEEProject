@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="welcome.xhtml">
+
+   <ui:define name="content">
+      <div class="card" style="border:none;">
+         <h:form id="form">
+
+            <p:growl id="messages" showDetail="true"/>
+
+            <p:toolbar style="margin-bottom: 1rem;">
+               <p:toolbarGroup>
+                  <p:commandButton value="Ajouter" icon="pi pi-plus" actionListener="#{clientMBean.openNew}"
+                                   update=":dialogs:manage-client-content" oncomplete="PF('manageClientDialog').show()"
+                                   styleClass="ui-button-success" style="margin-right: .5rem">
+                     <p:resetInput target=":dialogs:manage-client-content" />
+                  </p:commandButton>
+                  <p:commandButton id="delete-clients-button" value="#{clientMBean.deleteButtonMessage}"
+                                   icon="pi pi-trash" actionListener="#{clientMBean.deleteSelectedClients}"
+                                   styleClass="ui-button-danger" disabled="#{!clientMBean.hasSelectedClients()}" update="@this">
+                     <p:confirm header="Confirmation" message="Supprimer les clients sélectionnées?"
+                                icon="pi pi-exclamation-triangle" />
+                  </p:commandButton>
+               </p:toolbarGroup>
+            </p:toolbar>
+
+            <p:dataTable id="dt-clients" widgetVar="dtClients" var="client" value="#{clientMBean.clients}"
+                         reflow="true" styleClass="clients-table" selection="#{clientMBean.selectedClients}"
+                         rowKey="#{client.id}" paginator="true" rows="10" rowSelectMode="add" paginatorPosition="bottom">
+               <f:facet name="header">
+                  <div style="display: flex; justify-content: space-between;align-items: center;">
+                     <span style="font-weight: bold">CLIENTS</span>
+                     <span class="filter-container ui-input-icon-left"> <i class="pi pi-search"></i>
+                        <p:inputText id="globalFilter" onkeyup="PF('dtClients').filter()" placeholder="Rechercher" />
+                    </span>
+                  </div>
+               </f:facet>
+
+               <p:ajax event="rowSelect" update=":form:delete-clients-button" />
+               <p:ajax event="rowUnselect" update=":form:delete-clients-button" />
+               <p:ajax event="rowSelectCheckbox" update=":form:delete-clients-button" />
+               <p:ajax event="rowUnselectCheckbox" update=":form:delete-clients-button" />
+               <p:ajax event="toggleSelect" update=":form:delete-clients-button" />
+
+               <p:column selectionMode="multiple" exportable="false"></p:column>
+
+               <p:column headerText="ID" sortBy="#{client.id}" filterBy="#{client.id}">
+                  <h:outputText value="#{client.id}" />
+               </p:column>
+               <p:column headerText="Nom" sortBy="#{client.nom}" filterBy="#{client.nom}">
+                  <h:outputText value="#{client.nom}" />
+               </p:column>
+               <p:column headerText="Prenom" sortBy="#{client.prenom}" filterBy="#{client.prenom}">
+                  <h:outputText value="#{client.prenom}"/>
+               </p:column>
+               <p:column headerText="Telephone" sortBy="#{client.telephone}" filterBy="#{client.telephone}">
+                  <h:outputText value="#{client.telephone}" />
+               </p:column>
+               <p:column headerText="Email" sortBy="#{client.email}" filterBy="#{client.email}">
+                  <h:outputText value="#{client.email}" />
+               </p:column>
+               <p:column headerText="Adresse" sortBy="#{client.adresse.adresse}" filterBy="#{client.adresse.adresse}">
+                  <h:outputText value="#{client.adresse.adresse}" />
+               </p:column>
+               <p:column headerText="Ville" sortBy="#{client.adresse.ville}" filterBy="#{client.adresse.ville}">
+                  <h:outputText value="#{client.adresse.ville}" />
+               </p:column>
+               <p:column headerText="Etat" sortBy="#{client.adresse.etat}" filterBy="#{client.adresse.etat}">
+                  <h:outputText value="#{client.adresse.etat}" />
+               </p:column>
+               <p:column headerText="Code" sortBy="#{client.adresse.codeZip}" filterBy="#{client.adresse.codeZip}">
+                  <h:outputText value="#{client.adresse.codeZip}" />
+               </p:column>
+               <p:column exportable="false">
+                  <p:commandButton icon="pi pi-pencil" update=":dialogs:manage-client-content"
+                                   oncomplete="PF('manageClientDialog').show()"
+                                   styleClass="edit-button rounded-button ui-button-success" process="@this" style="margin-bottom: .5rem;">
+                     <f:setPropertyActionListener value="#{client}" target="#{clientMBean.selectedClient}" />
+                     <p:resetInput target=":dialogs:manage-client-content" />
+                  </p:commandButton>
+                  <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash"
+                                   process="@this"
+                                   oncomplete="PF('deleteClientDialog').show()">
+                     <f:setPropertyActionListener value="#{client}" target="#{clientMBean.selectedClient}" />
+                  </p:commandButton>
+               </p:column>
+            </p:dataTable>
+         </h:form>
+
+         <h:form id="dialogs">
+            <p:dialog header="Details Clients" showEffect="fade" modal="true" widgetVar="manageClientDialog"
+                      responsive="true">
+               <p:outputPanel id="manage-client-content" class="ui-fluid">
+                  <p:outputPanel rendered="#{not empty clientMBean.selectedClient}">
+                     <p:panelGrid cellpadding="10" columns="4" styleClass="ui-noborder">
+                           <p:outputLabel for="nom">Nom</p:outputLabel>
+                           <p:inputText id="nom" value="#{clientMBean.selectedClient.nom}" required="true"/>
+                           <p:outputLabel for="prenom">Prenom</p:outputLabel>
+                           <p:inputText id="prenom" value="#{clientMBean.selectedClient.prenom}" required="true"/>
+                           <p:outputLabel for="telephone">Telephone</p:outputLabel>
+                           <p:inputText id="telephone" value="#{clientMBean.selectedClient.telephone}"/>
+                           <p:outputLabel for="email">Email</p:outputLabel>
+                           <p:inputText id="email" value="#{clientMBean.selectedClient.email}" required="true"/>
+                           <p:outputLabel for="adresse">Adresse</p:outputLabel>
+                           <p:inputText id="adresse" value="#{clientMBean.selectedClient.adresse.adresse}"/>
+                           <p:outputLabel for="ville">Ville</p:outputLabel>
+                           <p:inputText id="ville" value="#{clientMBean.selectedClient.adresse.ville}"/>
+                           <p:outputLabel for="etat">Etat</p:outputLabel>
+                           <p:inputText id="etat" value="#{clientMBean.selectedClient.adresse.etat}"/>
+                           <p:outputLabel for="code">Code</p:outputLabel>
+                           <p:inputText id="code" value="#{clientMBean.selectedClient.adresse.codeZip}"/>
+                     </p:panelGrid>
+                  </p:outputPanel>
+               </p:outputPanel>
+
+               <f:facet name="footer">
+                  <p:commandButton value="Enregistrer" icon="pi pi-check" actionListener="#{clientMBean.saveClient}"
+                                   update="manage-client-content" process="manage-client-content @this" />
+                  <p:commandButton value="Annuler" icon="pi pi-times" onclick="PF('manageClientDialog').hide()"
+                                   class="ui-button-secondary" type="button" />
+               </f:facet>
+            </p:dialog>
+
+            <p:confirmDialog widgetVar="deleteClientDialog" showEffect="fade" width="300"
+                             message="Supprimer le client?" header="Confirmer" severity="warn">
+               <p:commandButton value="Oui" icon="pi pi-check" actionListener="#{clientMBean.deleteClient}"
+                                process="@this" update=":form:delete-clients-button"
+                                oncomplete="PF('deleteClientDialog').hide()" />
+               <p:commandButton value="Non" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
+                                onclick="PF('deleteClientDialog').hide()" />
+            </p:confirmDialog>
+
+            <p:confirmDialog global="true" showEffect="fade" width="300">
+               <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+               <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-secondary"
+                                icon="pi pi-times" />
+            </p:confirmDialog>
+         </h:form>
+      </div>
+   </ui:define>
+</ui:composition>

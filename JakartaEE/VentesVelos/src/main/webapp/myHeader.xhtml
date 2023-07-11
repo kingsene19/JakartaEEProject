@@ -1,0 +1,29 @@
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+              xmlns:ui="http://java.sun.com/jsf/facelets"
+              xmlns:h="http://java.sun.com/jsf/html"
+              xmlns:p="http://primefaces.org/ui"
+              xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <div class="card m-2">
+        <h:form>
+            <p:menubar>
+                <p:menuitem style="width: 80px;" value="Acceuil" action="#{redirectionBean.redirectToPage('')}"/>
+                <p:menuitem style="width: 100px;" value="Articles" action="#{redirectionBean.redirectToPage('article-pf.xhtml')}"/>
+                <p:menuitem style="width: 100px;" value="Categories"  action="#{redirectionBean.redirectToPage('categorie-pf.xhtml')}"/>
+                <p:menuitem style="width: 80px;" value="Marques" action="#{redirectionBean.redirectToPage('marque-pf.xhtml')}"/>
+                <p:menuitem style="width: 80px;" value="Clients" action="#{redirectionBean.redirectToPage('client-pf.xhtml')}"/>
+                <p:menuitem style="width: 100px;" value="Commandes" action="#{redirectionBean.redirectToPage('commande-pf.xhtml')}"/>
+                <p:menuitem style="width: 100px;" value="Employes" action="#{redirectionBean.redirectToPage('employe-pf.xhtml')}"/>
+                <p:menuitem style="width: 100px;" value="Produits" action="#{redirectionBean.redirectToPage('produit-pf.xhtml')}"/>
+                <p:menuitem style="width: 100px;" value="Magasins" action="#{redirectionBean.redirectToPage('magasin-pf.xhtml')}"/>
+                <p:menuitem style="width: 80px;" value="Stocks" action="#{redirectionBean.redirectToPage('stock-pf.xhtml')}"/>
+
+                <f:facet name="options">
+                    <div class="ui-input-icon-left mr-2">
+                        <i class="pi pi-fw pi-search" />
+                        <p:inputText placeholder="Recherche"/>
+                    </div>
+                </f:facet>
+            </p:menubar>
+        </h:form>
+    </div>
+</ui:component>

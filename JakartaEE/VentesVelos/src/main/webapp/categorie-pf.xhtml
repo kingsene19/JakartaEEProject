@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="welcome.xhtml">
+   <ui:define name="content">
+      <div class="card" style="border:none;">
+         <h:form id="form">
+
+            <p:growl id="messages" showDetail="true"/>
+
+            <p:toolbar style="margin-bottom: 1rem;">
+               <p:toolbarGroup>
+                  <p:commandButton value="Ajouter" icon="pi pi-plus" actionListener="#{categorieMBean.openNew}"
+                                   update=":dialogs:manage-categorie-content" oncomplete="PF('manageCategorieDialog').show()"
+                                   styleClass="ui-button-success" style="margin-right: .5rem">
+                     <p:resetInput target=":dialogs:manage-categorie-content" />
+                  </p:commandButton>
+                  <p:commandButton id="delete-categories-button" value="#{categorieMBean.deleteButtonMessage}"
+                                   icon="pi pi-trash" actionListener="#{categorieMBean.deleteSelectedCategories}"
+                                   styleClass="ui-button-danger" disabled="#{!categorieMBean.hasSelectedCategories()}" update="@this">
+                     <p:confirm header="Confirmation" message="Supprimer les catégories sélectionnées?"
+                                icon="pi pi-exclamation-triangle" />
+                  </p:commandButton>
+               </p:toolbarGroup>
+            </p:toolbar>
+
+            <p:dataTable id="dt-categories" widgetVar="dtCategories" var="categorie" value="#{categorieMBean.categories}"
+                         reflow="true" styleClass="categories-table" selection="#{categorieMBean.selectedCategories}"
+                         rowKey="#{categorie.id}" paginator="true" rows="10" rowSelectMode="add" paginatorPosition="bottom">
+               <f:facet name="header">
+                  <div style="display: flex; justify-content: space-between;align-items: center;">
+                     <span style="font-weight: bold">CATEGORIES</span>
+                     <span class="filter-container ui-input-icon-left"> <i class="pi pi-search"></i>
+                        <p:inputText id="globalFilter" onkeyup="PF('dtCategories').filter()" placeholder="Rechercher" />
+                    </span>
+                  </div>
+               </f:facet>
+
+               <p:ajax event="rowSelect" update=":form:delete-categories-button" />
+               <p:ajax event="rowUnselect" update=":form:delete-categories-button" />
+               <p:ajax event="rowSelectCheckbox" update=":form:delete-categories-button" />
+               <p:ajax event="rowUnselectCheckbox" update=":form:delete-categories-button" />
+               <p:ajax event="toggleSelect" update=":form:delete-categories-button" />
+
+               <p:column selectionMode="multiple" exportable="false"></p:column>
+
+               <p:column headerText="ID" sortBy="#{categorie.id}" filterBy="#{categorie.id}">
+                  <h:outputText value="#{categorie.id}" />
+               </p:column>
+               <p:column headerText="Nom" sortBy="#{categorie.nom}" filterBy="#{categorie.nom}">
+                  <h:outputText value="#{categorie.nom}" />
+               </p:column>
+               <p:column exportable="false">
+                  <p:commandButton icon="pi pi-pencil" update=":dialogs:manage-categorie-content"
+                                   oncomplete="PF('manageCategorieDialog').show()"
+                                   styleClass="edit-button rounded-button ui-button-success" process="@this" style="margin-right: .5rem;">
+                     <f:setPropertyActionListener value="#{categorie}" target="#{categorieMBean.selectedCategorie}" />
+                     <p:resetInput target=":dialogs:manage-categorie-content" />
+                  </p:commandButton>
+                  <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash"
+                                   process="@this"
+                                   oncomplete="PF('deleteCategorieDialog').show()">
+                     <f:setPropertyActionListener value="#{categorie}" target="#{categorieMBean.selectedCategorie}" />
+                  </p:commandButton>
+               </p:column>
+            </p:dataTable>
+         </h:form>
+
+         <h:form id="dialogs">
+            <p:dialog header="Details Categories" showEffect="fade" modal="true" widgetVar="manageCategorieDialog"
+                      responsive="true">
+               <p:outputPanel id="manage-categorie-content" class="ui-fluid">
+                  <p:outputPanel rendered="#{not empty categorieMBean.selectedCategorie}">
+                     <div class="field">
+                        <p:outputLabel for="nom">Nom</p:outputLabel>
+                        <p:inputText id="nom" value="#{categorieMBean.selectedCategorie.nom}" required="true" />
+                     </div>
+                  </p:outputPanel>
+               </p:outputPanel>
+
+               <f:facet name="footer">
+                  <p:commandButton value="Enregistrer" icon="pi pi-check" actionListener="#{categorieMBean.saveCategorie}"
+                                   update="manage-categorie-content" process="manage-categorie-content @this" />
+                  <p:commandButton value="Annuler" icon="pi pi-times" onclick="PF('manageCategorieDialog').hide()"
+                                   class="ui-button-secondary" type="button" />
+               </f:facet>
+            </p:dialog>
+
+            <p:confirmDialog widgetVar="deleteCategorieDialog" showEffect="fade" width="300"
+                             message="Supprimer la catégorie?" header="Confirmer" severity="warn">
+               <p:commandButton value="Oui" icon="pi pi-check" actionListener="#{categorieMBean.deleteCategorie}"
+                                process="@this" update=":form:delete-categories-button"
+                                oncomplete="PF('deleteCategorieDialog').hide()" />
+               <p:commandButton value="Non" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
+                                onclick="PF('deleteCategorieDialog').hide()" />
+            </p:confirmDialog>
+
+            <p:confirmDialog global="true" showEffect="fade" width="300">
+               <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+               <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-secondary"
+                                icon="pi pi-times" />
+            </p:confirmDialog>
+         </h:form>
+      </div>
+   </ui:define>
+</ui:composition>

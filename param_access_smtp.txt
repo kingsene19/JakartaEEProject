@@ -1,0 +1,4 @@
+smtpHost: smtp.gmail.com
+stmpPort: 587
+username: tunknowed@gmail.com
+password: lvdgrtzpsvcjptzg

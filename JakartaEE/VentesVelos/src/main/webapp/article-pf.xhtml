@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="welcome.xhtml">
+
+   <ui:define name="content">
+      <div class="card" style="border:none;">
+         <h:form id="form">
+
+            <p:growl id="messages" showDetail="true"/>
+
+            <p:toolbar style="margin-bottom: 1rem;">
+               <p:toolbarGroup>
+                  <p:commandButton value="Ajouter" icon="pi pi-plus" actionListener="#{articleMBean.openNew}"
+                                   update=":dialogs:manage-article-content" oncomplete="PF('manageArticleDialog').show()"
+                                   styleClass="ui-button-success" style="margin-right: .5rem">
+                     <p:resetInput target=":dialogs:manage-article-content" />
+                  </p:commandButton>
+                  <p:commandButton id="delete-articles-button" value="#{articleMBean.deleteButtonMessage}"
+                                   icon="pi pi-trash" actionListener="#{articleMBean.deleteSelectedArticles}"
+                                   styleClass="ui-button-danger" disabled="#{!articleMBean.hasSelectedArticles()}" update="@this">
+                     <p:confirm header="Confirmation" message="Supprimer les articles sélectionnées?"
+                                icon="pi pi-exclamation-triangle" />
+                  </p:commandButton>
+               </p:toolbarGroup>
+            </p:toolbar>
+
+            <p:dataTable id="dt-articles" widgetVar="dtArticles" var="article" value="#{articleMBean.articles}"
+                         reflow="true" styleClass="articles-table" selection="#{articleMBean.selectedArticles}"
+                         rowKey="#{article.commandeId.numero}" paginator="true" rows="10" rowSelectMode="add" paginatorPosition="bottom">
+               <f:facet name="header">
+                  <div style="display: flex; justify-content: space-between;align-items: center;">
+                     <span style="font-weight: bold">COMMANDES</span>
+                     <span class="filter-container ui-input-icon-left"> <i class="pi pi-search"></i>
+                        <p:inputText id="globalFilter" onkeyup="PF('dtArticles').filter()" placeholder="Rechercher" />
+                    </span>
+                  </div>
+               </f:facet>
+
+               <p:ajax event="rowSelect" update=":form:delete-articles-button" />
+               <p:ajax event="rowUnselect" update=":form:delete-articles-button" />
+               <p:ajax event="rowSelectCheckbox" update=":form:delete-articles-button" />
+               <p:ajax event="rowUnselectCheckbox" update=":form:delete-articles-button" />
+               <p:ajax event="toggleSelect" update=":form:delete-articles-button" />
+
+               <p:column selectionMode="multiple" exportable="false"></p:column>
+
+               <p:column headerText="Ligne" sortBy="#{article.articleCommandePK.ligne}" filterBy="#{article.articleCommandePK.ligne}">
+                  <h:outputText value="#{article.articleCommandePK.ligne}" />
+               </p:column>
+               <p:column headerText="Numero" sortBy="#{article.commandeId.numero}" filterBy="#{article.commandeId.numero}">
+                  <h:outputText value="#{article.commandeId.numero}" />
+               </p:column>
+               <p:column headerText="Produit" sortBy="#{article.produitId.nom}" filterBy="#{article.produitId.nom}">
+                  <h:outputText value="#{article.produitId.nom}"/>
+               </p:column>
+               <p:column headerText="Remise" sortBy="#{article.remise}" filterBy="#{article.remise}">
+                  <h:outputText value="#{article.remise}"/>
+               </p:column>
+               <p:column headerText="Quantite" sortBy="#{article.quantite}" filterBy="#{article.quantite}">
+                  <h:outputText value="#{article.quantite}"/>
+               </p:column>
+               <p:column headerText="Prix Depart" sortBy="#{article.prixDepart}" filterBy="#{article.prixDepart}">
+                  <h:outputText value="#{article.prixDepart}" />
+               </p:column>
+               <p:column exportable="false">
+                  <p:commandButton icon="pi pi-pencil" update=":dialogs:manage-article-content"
+                                   oncomplete="PF('manageArticleDialog').show()"
+                                   styleClass="edit-button rounded-button ui-button-success" process="@this" style="margin-right: .5rem;margin-bottom: .5rem;">
+                     <f:setPropertyActionListener value="#{article}" target="#{articleMBean.selectedArticle}" />
+                     <p:resetInput target=":dialogs:manage-article-content" />
+                  </p:commandButton>
+                  <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash"
+                                   process="@this"
+                                   oncomplete="PF('deleteArticleDialog').show()">
+                     <f:setPropertyActionListener value="#{article}" target="#{articleMBean.selectedArticle}" />
+                  </p:commandButton>
+               </p:column>
+            </p:dataTable>
+         </h:form>
+
+         <h:form id="dialogs">
+            <p:dialog header="Details Articles" showEffect="fade" modal="true" widgetVar="manageArticleDialog"
+                      responsive="true">
+               <p:outputPanel id="manage-article-content" class="ui-fluid">
+                  <p:outputPanel rendered="#{not empty articleMBean.selectedArticle}">
+                     <p:panelGrid cellpadding="10" columns="4" styleClass="ui-noborder">
+                        <p:outputLabel for="qte" value="Quantite:"/>
+                        <p:inputNumber id="qte" value="#{articleMBean.selectedArticle.quantite}" required="true" decimalPlaces="0"/>
+                        <p:outputLabel for="remise" value="Remise:"/>
+                        <p:inputNumber id="remise" value="#{articleMBean.selectedArticle.remise}" required="true" decimalSeparator="."/>
+                        <p:outputLabel for="ligne" value="Ligne:"/>
+                        <p:inputNumber id="ligne" value="#{articleMBean.selectedArticle.articleCommandePK.ligne}" required="true" decimalPlaces="0"/>
+                        <p:outputLabel for="commande" value="Commande:"/>
+                        <p:selectOneMenu id="commande" value="#{articleMBean.selectedArticle.commandeId}" required="true">
+                           <f:converter converterId="commandeConverter"/>
+                           <f:selectItem itemLabel="Choisir une commande" itemValue=""/>
+                           <f:selectItems value="#{commandeMBean.commandes}" var="commande"
+                                          itemLabel="#{commande.numero}" itemValue="#{commande}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel for="produit" value="Produit:"/>
+                        <p:selectOneMenu id="produit" value="#{articleMBean.selectedArticle.produitId}" required="true">
+                           <f:converter converterId="produitConverter"/>
+                           <f:selectItem itemLabel="Choisir un produit" itemValue=""/>
+                           <f:selectItems value="#{produitMBean.produits}" var="produit"
+                                          itemLabel="#{produit.nom}" itemValue="#{produit}"/>
+                        </p:selectOneMenu>
+                     </p:panelGrid>
+                  </p:outputPanel>
+               </p:outputPanel>
+
+               <f:facet name="footer">
+                  <p:commandButton value="Enregistrer" icon="pi pi-check" actionListener="#{articleMBean.saveArticle}"
+                                   update="manage-article-content" process="manage-article-content @this" />
+                  <p:commandButton value="Annuler" icon="pi pi-times" onclick="PF('manageArticleDialog').hide()"
+                                   class="ui-button-secondary" type="button" />
+               </f:facet>
+            </p:dialog>
+
+            <p:confirmDialog widgetVar="deleteArticleDialog" showEffect="fade" width="300"
+                             message="Supprimer l'article?" header="Confirmer" severity="warn">
+               <p:commandButton value="Oui" icon="pi pi-check" actionListener="#{articleMBean.deleteArticle}"
+                                process="@this" update=":form:delete-articles-button"
+                                oncomplete="PF('deleteArticleDialog').hide()" />
+               <p:commandButton value="Non" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
+                                onclick="PF('deleteArticleDialog').hide()" />
+            </p:confirmDialog>
+
+            <p:confirmDialog global="true" showEffect="fade" width="300">
+               <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+               <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-secondary"
+                                icon="pi pi-times" />
+            </p:confirmDialog>
+         </h:form>
+      </div>
+   </ui:define>
+</ui:composition>
+

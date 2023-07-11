@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="welcome.xhtml">
+
+   <ui:define name="content">
+      <div class="card" style="border:none;">
+         <h:form id="form">
+
+            <p:growl id="messages" showDetail="true"/>
+
+            <p:toolbar style="margin-bottom: 1rem;">
+               <p:toolbarGroup>
+                  <p:commandButton value="Ajouter" icon="pi pi-plus" actionListener="#{stockMBean.openNew}"
+                                   update=":dialogs:manage-stock-content" oncomplete="PF('manageStockDialog').show()"
+                                   styleClass="ui-button-success" style="margin-right: .5rem">
+                     <p:resetInput target=":dialogs:manage-stock-content" />
+                  </p:commandButton>
+                  <p:commandButton id="delete-stocks-button" value="#{stockMBean.deleteButtonMessage}"
+                                   icon="pi pi-trash" actionListener="#{stockMBean.deleteSelectedStocks}"
+                                   styleClass="ui-button-danger" disabled="#{!stockMBean.hasSelectedStocks()}" update="@this">
+                     <p:confirm header="Confirmation" message="Supprimer les stocks sélectionnés?"
+                                icon="pi pi-exclamation-triangle" />
+                  </p:commandButton>
+               </p:toolbarGroup>
+            </p:toolbar>
+
+            <p:dataTable id="dt-stocks" widgetVar="dtStocks" var="stock" value="#{stockMBean.stocks}"
+                         reflow="true" styleClass="stocks-table" selection="#{stockMBean.selectedStocks}"
+                         rowKey="#{stock.produitId.nom}" paginator="true" rows="10" rowSelectMode="add" paginatorPosition="bottom">
+               <f:facet name="header">
+                  <div style="display: flex; justify-content: space-between;align-items: center;">
+                     <span style="font-weight: bold">STOCKS</span>
+                     <span class="filter-container ui-input-icon-left"> <i class="pi pi-search"></i>
+                        <p:inputText id="globalFilter" onkeyup="PF('dtStocks').filter()" placeholder="Rechercher" />
+                    </span>
+                  </div>
+               </f:facet>
+
+               <p:ajax event="rowSelect" update=":form:delete-stocks-button" />
+               <p:ajax event="rowUnselect" update=":form:delete-stocks-button" />
+               <p:ajax event="rowSelectCheckbox" update=":form:delete-stocks-button" />
+               <p:ajax event="rowUnselectCheckbox" update=":form:delete-stocks-button" />
+               <p:ajax event="toggleSelect" update=":form:delete-stocks-button" />
+
+               <p:column selectionMode="multiple" exportable="false"></p:column>
+
+               <p:column headerText="QUANTITE" sortBy="#{stock.quantite}" filterBy="#{stock.quantite}">
+                  <h:outputText value="#{stock.quantite}" />
+               </p:column>
+               <p:column headerText="PRODUIT" sortBy="#{stock.produitId.nom}" filterBy="#{stock.produitId.nom}">
+                  <h:outputText value="#{stock.produitId.nom}" />
+               </p:column>
+               <p:column headerText="MAGASIN" sortBy="#{stock.magasinId.nom}" filterBy="#{stock.magasinId.nom}">
+                  <h:outputText value="#{stock.magasinId.nom}" />
+               </p:column>
+               <p:column exportable="false">
+                  <p:commandButton icon="pi pi-pencil" update=":dialogs:manage-stock-content"
+                                   oncomplete="PF('manageStockDialog').show()"
+                                   styleClass="edit-button rounded-button ui-button-success" process="@this" style="margin-right: .5rem;">
+                     <f:setPropertyActionListener value="#{stock}" target="#{stockMBean.selectedStock}" />
+                     <p:resetInput target=":dialogs:manage-stock-content" />
+                  </p:commandButton>
+                  <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash"
+                                   process="@this"
+                                   oncomplete="PF('deleteStockDialog').show()">
+                     <f:setPropertyActionListener value="#{stock}" target="#{stockMBean.selectedStock}" />
+                  </p:commandButton>
+               </p:column>
+            </p:dataTable>
+         </h:form>
+
+         <h:form id="dialogs">
+            <p:dialog header="Details Stocks" showEffect="fade" modal="true" widgetVar="manageStockDialog"
+                      responsive="true">
+               <p:outputPanel id="manage-stock-content" class="ui-fluid">
+                  <p:outputPanel rendered="#{not empty stockMBean.selectedStock}">
+                     <div class="field">
+                        <p:outputLabel for="qte">Quantite</p:outputLabel>
+                        <p:inputText id="qte" value="#{stockMBean.selectedStock.quantite}" required="true"/>
+                     </div>
+                     <div class="field">
+                        <p:outputLabel for="magasin" rendered="#{stockMBean.selectedStock.magasinId == null}">Magasin</p:outputLabel>
+                        <p:selectOneMenu id="magasin" value="#{stockMBean.selectedStock.magasinId}" required="true" rendered="#{stockMBean.selectedStock.magasinId == null}">
+                           <f:converter converterId="magasinConverter"/>
+                           <f:selectItem itemLabel="Choisir un magasin" itemValue=""/>
+                           <f:selectItems value="#{magasinMBean.magasins}" var="magasin"
+                                          itemLabel="#{magasin.nom}" itemValue="#{magasin}"/>
+                        </p:selectOneMenu>
+                     </div>
+                     <div class="field">
+                        <p:outputLabel for="produit" rendered="#{stockMBean.selectedStock.produitId == null}">Produit</p:outputLabel>
+                        <p:selectOneMenu id="produit" value="#{stockMBean.selectedStock.produitId}" rendered="#{stockMBean.selectedStock.produitId == null}" required="true">
+                           <f:converter converterId="produitConverter"/>
+                           <f:selectItem itemLabel="Choisir un produit" itemValue=""/>
+                           <f:selectItems value="#{produitMBean.produits}" var="produit"
+                                          itemLabel="#{produit.nom}" itemValue="#{produit}"/>
+                        </p:selectOneMenu>
+                     </div>
+                  </p:outputPanel>
+               </p:outputPanel>
+
+               <f:facet name="footer">
+                  <p:commandButton value="Enregistrer" icon="pi pi-check" actionListener="#{stockMBean.saveStock}"
+                                   update="manage-stock-content" process="manage-stock-content @this" />
+                  <p:commandButton value="Annuler" icon="pi pi-times" onclick="PF('manageStockDialog').hide()"
+                                   class="ui-button-secondary" type="button" />
+               </f:facet>
+            </p:dialog>
+
+            <p:confirmDialog widgetVar="deleteStockDialog" showEffect="fade" width="300"
+                             message="Supprimer le stock?" header="Confirmer" severity="warn">
+               <p:commandButton value="Oui" icon="pi pi-check" actionListener="#{stockMBean.deleteStock}"
+                                process="@this" update=":form:delete-stocks-button"
+                                oncomplete="PF('deleteStockDialog').hide()" />
+               <p:commandButton value="Non" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
+                                onclick="PF('deleteStockDialog').hide()" />
+            </p:confirmDialog>
+
+            <p:confirmDialog global="true" showEffect="fade" width="300">
+               <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+               <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-secondary"
+                                icon="pi pi-times" />
+            </p:confirmDialog>
+         </h:form>
+      </div>
+   </ui:define>
+</ui:composition>
+

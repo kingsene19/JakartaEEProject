@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="welcome.xhtml">
+
+   <ui:define name="content">
+      <div style="border:none;">
+         <h:form id="form">
+
+            <p:growl id="messages" showDetail="true"/>
+
+            <p:toolbar style="margin-bottom: 1rem;">
+               <p:toolbarGroup>
+                  <p:commandButton value="Ajouter" icon="pi pi-plus" actionListener="#{employeMBean.openNew}"
+                                   update=":dialogs:manage-employe-content" oncomplete="PF('manageEmployeDialog').show()"
+                                   styleClass="ui-button-success" style="margin-right: .5rem">
+                     <p:resetInput target=":dialogs:manage-employe-content" />
+                  </p:commandButton>
+                  <p:commandButton id="delete-employes-button" value="#{employeMBean.deleteButtonMessage}"
+                                   icon="pi pi-trash" actionListener="#{employeMBean.deleteSelectedEmployes}"
+                                   styleClass="ui-button-danger" disabled="#{!employeMBean.hasSelectedEmployes()}" update="@this">
+                     <p:confirm header="Confirmation" message="Supprimer les employés sélectionnées?"
+                                icon="pi pi-exclamation-triangle" />
+                  </p:commandButton>
+               </p:toolbarGroup>
+            </p:toolbar>
+
+            <p:dataTable id="dt-employes" widgetVar="dtEmployes" var="employe" value="#{employeMBean.employes}"
+                         reflow="true" styleClass="employes-table" selection="#{employeMBean.selectedEmployes}"
+                         rowKey="#{employe.id}" paginator="true" rows="10" rowSelectMode="add" paginatorPosition="bottom">
+               <f:facet name="header">
+                  <div style="display: flex; justify-content: space-between;align-items: center;">
+                     <span style="font-weight: bold">EMPLOYES</span>
+                     <span class="filter-container ui-input-icon-left"> <i class="pi pi-search"></i>
+                        <p:inputText id="globalFilter" onkeyup="PF('dtEmployes').filter()" placeholder="Rechercher" />
+                    </span>
+                  </div>
+               </f:facet>
+
+               <p:ajax event="rowSelect" update=":form:delete-employes-button" />
+               <p:ajax event="rowUnselect" update=":form:delete-employes-button" />
+               <p:ajax event="rowSelectCheckbox" update=":form:delete-employes-button" />
+               <p:ajax event="rowUnselectCheckbox" update=":form:delete-employes-button" />
+               <p:ajax event="toggleSelect" update=":form:delete-employes-button" />
+
+               <p:column selectionMode="multiple" exportable="false"></p:column>
+
+               <p:column headerText="ID" sortBy="#{employe.id}" filterBy="#{employe.id}">
+                  <h:outputText value="#{employe.id}" />
+               </p:column>
+               <p:column headerText="Nom" sortBy="#{employe.nom}" filterBy="#{employe.nom}">
+                  <h:outputText value="#{employe.nom}" />
+               </p:column>
+               <p:column headerText="Prenom" sortBy="#{employe.prenom}" filterBy="#{employe.prenom}">
+                  <h:outputText value="#{employe.prenom}"/>
+               </p:column>
+               <p:column headerText="Telephone" sortBy="#{employe.telephone}" filterBy="#{employe.telephone}">
+                  <h:outputText value="#{employe.telephone}" />
+               </p:column>
+               <p:column headerText="Email" sortBy="#{employe.email}" filterBy="#{employe.email}">
+                  <h:outputText value="#{employe.email}" />
+               </p:column>
+               <p:column headerText="Actif" sortBy="#{employe.actif}" filterBy="#{employe.actif}">
+                  <h:outputText value="#{employe.actif}" />
+               </p:column>
+               <p:column headerText="Manager" sortBy="#{employe.managerId.nom}" filterBy="#{employe.managerId.nom}">
+                  <h:outputText value="#{employe.managerId.nom}" />
+               </p:column>
+               <p:column headerText="Magasin" sortBy="#{employe.magasinId.nom}" filterBy="#{employe.magasinId.nom}">
+                  <h:outputText value="#{employe.magasinId.nom}" />
+               </p:column>
+               <!--<p:column headerText="Adresse" sortBy="#{employe.adresse.adresse}" filterBy="#{employe.adresse.adresse}">
+                  <h:outputText value="#{employe.adresse.adresse}" />
+               </p:column>
+               <p:column headerText="Ville" sortBy="#{employe.adresse.ville}" filterBy="#{employe.adresse.ville}">
+                  <h:outputText value="#{employe.adresse.ville}" />
+               </p:column>
+               <p:column headerText="Etat" sortBy="#{employe.adresse.etat}" filterBy="#{employe.adresse.etat}">
+                  <h:outputText value="#{employe.adresse.etat}" />
+               </p:column>
+               <p:column headerText="Code" sortBy="#{employe.adresse.codeZip}" filterBy="#{employe.adresse.codeZip}">
+                  <h:outputText value="#{employe.adresse.codeZip}" />
+               </p:column>-->
+               <p:column exportable="false">
+                  <p:commandButton icon="pi pi-pencil" update=":dialogs:manage-employe-content"
+                                   oncomplete="PF('manageEmployeDialog').show()"
+                                   styleClass="edit-button rounded-button ui-button-success" process="@this" style="margin-bottom: .5rem; margin-right: .5rem">
+                     <f:setPropertyActionListener value="#{employe}" target="#{employeMBean.selectedEmploye}" />
+                     <p:resetInput target=":dialogs:manage-employe-content" />
+                  </p:commandButton>
+                  <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash"
+                                   process="@this"
+                                   oncomplete="PF('deleteEmployeDialog').show()">
+                     <f:setPropertyActionListener value="#{employe}" target="#{employeMBean.selectedEmploye}" />
+                  </p:commandButton>
+               </p:column>
+            </p:dataTable>
+         </h:form>
+
+         <h:form id="dialogs">
+            <p:dialog header="Details Employes" showEffect="fade" modal="true" widgetVar="manageEmployeDialog"
+                      responsive="true" style="margin-bottom: 10px;margin-top: 10px;width:400px;">
+               <p:outputPanel id="manage-employe-content" class="ui-fluid">
+                  <p:outputPanel rendered="#{not empty employeMBean.selectedEmploye}">
+                     <p:panelGrid cellpadding="10" columns="4" styleClass="ui-noborder">
+                        <p:outputLabel for="nom">Nom</p:outputLabel>
+                        <p:inputText id="nom" value="#{employeMBean.selectedEmploye.nom}" required="true"/>
+                        <p:outputLabel for="prenom">Prenom</p:outputLabel>
+                        <p:inputText id="prenom" value="#{employeMBean.selectedEmploye.prenom}" required="true"/>
+                        <p:outputLabel for="telephone">Telephone</p:outputLabel>
+                        <p:inputText id="telephone" value="#{employeMBean.selectedEmploye.telephone}"/>
+                        <p:outputLabel for="email">Email</p:outputLabel>
+                        <p:inputText id="email" value="#{employeMBean.selectedEmploye.email}" required="true"/>
+                        <p:outputLabel for="adresse">Adresse</p:outputLabel>
+                        <p:inputText id="adresse" value="#{employeMBean.selectedEmploye.adresse.adresse}"/>
+                        <p:outputLabel for="ville">Ville</p:outputLabel>
+                        <p:inputText id="ville" value="#{employeMBean.selectedEmploye.adresse.ville}"/>
+                        <p:outputLabel for="etat">Etat</p:outputLabel>
+                        <p:inputText id="etat" value="#{employeMBean.selectedEmploye.adresse.etat}"/>
+                        <p:outputLabel for="code">Code</p:outputLabel>
+                        <p:inputText id="code" value="#{employeMBean.selectedEmploye.adresse.codeZip}"/>
+                        <p:outputLabel for="actif">Actif</p:outputLabel>
+                        <p:inputNumber id="actif" value="#{employeMBean.selectedEmploye.actif}" required="true" decimalPlaces="0"/>
+                        <p:outputLabel for="magasin">Magasin</p:outputLabel>
+                        <p:selectOneMenu id="magasin" value="#{employeMBean.selectedEmploye.magasinId}" required="true">
+                           <f:converter converterId="magasinConverter"/>
+                           <f:selectItem itemLabel="Choisir un magasin" itemValue=""/>
+                           <f:selectItems value="#{magasinMBean.magasins}" var="magasin"
+                                          itemLabel="#{magasin.nom}" itemValue="#{magasin}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel for="manager">Manager</p:outputLabel>
+                        <p:selectOneMenu id="manager" value="#{employeMBean.selectedEmploye.managerId}">
+                           <f:converter converterId="employeConverter"/>
+                           <f:selectItem itemLabel="Choisir un manager" itemValue=""/>
+                           <f:selectItems value="#{employeMBean.employes}" var="manager"
+                                          itemLabel="#{manager.prenom} #{manager.nom}" itemValue="#{manager}"/>
+                        </p:selectOneMenu>
+                     </p:panelGrid>
+                  </p:outputPanel>
+               </p:outputPanel>
+
+               <f:facet name="footer">
+                  <p:commandButton value="Enregistrer" icon="pi pi-check" actionListener="#{employeMBean.saveEmploye}"
+                                   update="manage-employe-content" process="manage-employe-content @this" />
+                  <p:commandButton value="Annuler" icon="pi pi-times" onclick="PF('manageEmployeDialog').hide()"
+                                   class="ui-button-secondary" type="button" />
+               </f:facet>
+            </p:dialog>
+
+            <p:confirmDialog widgetVar="deleteEmployeDialog" showEffect="fade" width="300"
+                             message="Supprimer l'employé?" header="Confirmer" severity="warn">
+               <p:commandButton value="Oui" icon="pi pi-check" actionListener="#{employeMBean.deleteEmploye}"
+                                process="@this" update=":form:delete-employes-button"
+                                oncomplete="PF('deleteEmployeDialog').hide()" />
+               <p:commandButton value="Non" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
+                                onclick="PF('deleteEmployeDialog').hide()" />
+            </p:confirmDialog>
+
+            <p:confirmDialog global="true" showEffect="fade" width="300">
+               <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+               <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-secondary"
+                                icon="pi pi-times" />
+            </p:confirmDialog>
+         </h:form>
+      </div>
+   </ui:define>
+</ui:composition>
