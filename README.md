@@ -8,7 +8,9 @@ Le repository peut être parcouru comme suit:
 Vous pourrez également trouvez la démo à la source du repository, ainis que les paramètres d'accès au serveur SMTP.
 
 ### Démo JakartaEE
-<video src="https://github.com/kingsene19/JakartaEEProject/blob/main/Demos/Demo_JakartaEE.mp4" controls="controls" style="max-width: 730px;"></video>
+<video src="" controls="controls" style="max-width: 730px;"></video>
+![](https://github.com/kingsene19/JakartaEEProject/blob/main/Demos/Demo_JakartaEE.mp4)
+
 
 ### Démo Service Web & Angular
-<video src="https://github.com/kingsene19/JakartaEEProject/blob/main/Demos/Demo_WebService_Angular.mp4" controls="controls" style="max-width: 730px;"></video>
+![](https://github.com/kingsene19/JakartaEEProject/blob/main/Demos/Demo_WebService_Angular.mp4)
