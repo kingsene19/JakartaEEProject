@@ -47,8 +47,7 @@ public class Commande implements Serializable {
     private LocalDate dateLivraison;
 
     @JsonbTransient
-    @OneToMany(mappedBy = "commandeId", cascade = CascadeType.ALL, orphanRemoval = true)
-    @CascadeOnDelete
+    @OneToMany(mappedBy = "commandeId", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Collection<ArticleCommande> articleCommandeCollection;
 
     @JoinColumn(name = "CLIENT_ID", referencedColumnName = "ID")

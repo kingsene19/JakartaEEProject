@@ -44,13 +44,11 @@ public class Produit implements Serializable {
     private Marque marqueId;
 
     @JsonbTransient
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "produitId", orphanRemoval = true)
-    @CascadeOnDelete
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "produitId", orphanRemoval = true)
     private Collection<Stock> stockCollection;
 
     @JsonbTransient
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "produitId", orphanRemoval = true)
-    @CascadeOnDelete
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "produitId", orphanRemoval = true)
     private Collection<ArticleCommande> articleCommandeCollection;
 
     public Produit() {

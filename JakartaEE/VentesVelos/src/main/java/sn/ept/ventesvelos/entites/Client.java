@@ -33,8 +33,7 @@ public class Client extends Personne {
     private Adresse adresse;
 
     @JsonbTransient
-    @OneToMany(mappedBy = "clientId", cascade = {CascadeType.ALL}, orphanRemoval = true)
-    @CascadeOnDelete
+    @OneToMany(mappedBy = "clientId", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Collection<Commande> commandeCollection;
 
 

@@ -44,18 +44,15 @@ public class Magasin implements Serializable {
     private Adresse adresse;
 
     @JsonbTransient
-    @OneToMany(mappedBy = "magasinId", cascade = CascadeType.ALL, orphanRemoval = true)
-    @CascadeOnDelete
+    @OneToMany(mappedBy = "magasinId", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Collection<Employe> employeCollection;
 
     @JsonbTransient
-    @OneToMany(mappedBy = "magasinId", cascade = CascadeType.ALL, orphanRemoval = true)
-    @CascadeOnDelete
+    @OneToMany(mappedBy = "magasinId", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Collection<Commande> commandeCollection;
 
     @JsonbTransient
-    @OneToMany(mappedBy = "magasinId", cascade = CascadeType.ALL,orphanRemoval = true)
-    @CascadeOnDelete
+    @OneToMany(mappedBy = "magasinId", cascade = CascadeType.REMOVE,orphanRemoval = true)
     private Collection<Stock> stockCollection;
 
     public Magasin() {

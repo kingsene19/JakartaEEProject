@@ -35,13 +35,11 @@ public class Employe extends Client {
     private Magasin magasinId;
 
     @JsonbTransient
-    @OneToMany(mappedBy = "managerId", cascade = {CascadeType.ALL}, orphanRemoval = true)
-    @CascadeOnDelete
+    @OneToMany(mappedBy = "managerId", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Collection<Employe> employeCollection;
 
     @JsonbTransient
-    @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "vendeurId", orphanRemoval = true)
-    @CascadeOnDelete
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "vendeurId", orphanRemoval = true)
     private Collection<Commande> commandeCollection;
 
     public Employe() {

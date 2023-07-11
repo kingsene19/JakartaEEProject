@@ -27,8 +27,7 @@ public class Marque implements Serializable {
     private String nom;
 
     @JsonbTransient
-    @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "marqueId", orphanRemoval = true)
-    @CascadeOnDelete
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "marqueId", orphanRemoval = true)
     private Collection<Produit> produitCollection;
 
     public Marque() {

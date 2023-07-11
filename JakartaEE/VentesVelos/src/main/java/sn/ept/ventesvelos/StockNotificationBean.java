@@ -25,7 +25,7 @@ public class StockNotificationBean {
          return stockInformation;
      }
 
-     @Schedule(hour="*", minute = "*/10", persistent = false)
+     @Schedule(hour="*", minute = "0", persistent = false)
      public void periodicStockEmail(Timer timer) {
          emailSender.sendEmail("tunknowed@gmail.com", "Etat des stocks",
                  "Voici l'état actuel des stocks " + getStockInformation());

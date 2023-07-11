@@ -28,8 +28,7 @@ public class Categorie implements Serializable {
     private String nom;
 
     @JsonbTransient
-    @OneToMany(cascade = {CascadeType.ALL},mappedBy = "categorieId", orphanRemoval = true)
-    @CascadeOnDelete
+    @OneToMany(cascade = CascadeType.REMOVE,mappedBy = "categorieId", orphanRemoval = true)
     private Collection<Produit> produitCollection;
 
     public Categorie() {

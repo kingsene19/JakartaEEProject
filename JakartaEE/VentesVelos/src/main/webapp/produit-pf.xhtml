@@ -22,7 +22,7 @@
                   <p:commandButton id="delete-produits-button" value="#{produitMBean.deleteButtonMessage}"
                                    icon="pi pi-trash" actionListener="#{produitMBean.deleteSelectedProduits}"
                                    styleClass="ui-button-danger" disabled="#{!produitMBean.hasSelectedProduits()}" update="@this">
-                     <p:confirm header="Confirmation" message="Supprimer les marques sélectionnées?"
+                     <p:confirm header="Confirmation" message="Supprimer les produits sélectionnées?"
                                 icon="pi pi-exclamation-triangle" />
                   </p:commandButton>
                </p:toolbarGroup>
@@ -129,7 +129,7 @@
             </p:dialog>
 
             <p:confirmDialog widgetVar="deleteProduitDialog" showEffect="fade" width="300"
-                             message="Supprimer la marque?" header="Confirmer" severity="warn">
+                             message="Supprimer le produit?" header="Confirmer" severity="warn">
                <p:commandButton value="Oui" icon="pi pi-check" actionListener="#{produitMBean.deleteProduit}"
                                 process="@this" update=":form:delete-produits-button"
                                 oncomplete="PF('deleteProduitDialog').hide()" />
