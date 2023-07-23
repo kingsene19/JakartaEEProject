@@ -1,0 +1,87 @@
+<div class="container my-3">
+    <div class="row">
+        <div class="col-md-5 col-md-push-2">
+            <div id="product-main-img">
+                <div class="product-preview">
+                    <img src="../../../assets/img/velos.webp" alt="">
+                </div>
+            </div>
+            <div class="add-to-cart">
+                <div class="qty-label">
+                    Qty
+                    <div class="input-number">
+                        <select id="select" class="h6" style="width:50px;height:40px;" (change)="onSelectionChange($event)">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                        </select>
+                    </div>
+                </div>
+                <button class="add-to-cart-btn" (click)="addToCart(produit.produit)" [disabled]="selectedStock == null"><i class="fa fa-shopping-cart"></i> Ajouter au panier</button>
+            </div>
+            <div *ngIf="addNotAuthorized===true" class="row text-danger">
+                <small>Vous ne pouvez pas ajouter plus que le stock disponible</small>
+            </div>
+        </div>
+
+        <div class="col-md-2  col-md-pull-5">
+            <div id="product-imgs">
+                <div class="product-preview">
+                    <img src="../../../assets/img/velos.webp" alt="">
+                </div>
+
+                <div class="product-preview">
+                    <img src="../../../assets/img/all.png" alt="">
+                </div>
+
+                <div class="product-preview">
+                    <img src="../../../assets/img/velos03.jpg" alt="">
+                </div>
+
+                <div class="product-preview">
+                    <img src="../../../assets/img/velos04.jpg" alt="">
+                </div>
+            </div>
+        </div>
+        <div class="col-md-5">
+            <div class="product-details">
+                <h2 class="product-name text-dark">{{produit.produit.nom}}</h2>
+                <div>
+                    <h3 class="product-price">${{produit.produit.prixDepart}}.00</h3>
+                </div>
+                <div>
+                    <ul class="product-links">
+                        <li>Category:</li>
+                        <li><a class="text-muted">{{produit.produit.categorieId.nom}}</a></li>
+                    </ul>
+                    <ul class="product-links">
+                        <li>Marque:</li>
+                        <li><a class="text-muted">{{produit.produit.marqueId.nom}}</a></li>
+                    </ul>
+                    <ul class="product-links">
+                        <li>Année:</li>
+                        <li><a class="text-muted">{{produit.produit.anneeModel}}</a></li>
+                    </ul>
+                </div>
+                <div *ngFor="let stock of produit.stocks">
+                    <button class="btn btn-outline-danger my-2 mag-button" [class.selected]="selectedStock === stock" (click)="selectStock(stock)" *ngIf="stock.quantite > 0">
+                        <h4>{{stock.magasinId.nom}}</h4>
+                        <p style="text-align: left;">
+                            <span><i class="bi bi-geo-fill"></i> {{stock.magasinId.adresse.adresse}}, {{stock.magasinId.adresse.ville}}, {{stock.magasinId.adresse.etat}}, {{stock.magasinId.adresse.codeZip}}</span><br/>
+                            <span><i class="bi bi-telephone-fill"></i> {{stock.magasinId.telephone}}</span><br/>
+                            <span><i class="bi bi-envelope-open-fill"></i> {{stock.magasinId.email}}</span><br/>
+                            <span><i class="bi bi-basket-fill"></i> {{stock.quantite}}</span><br/>
+                        </p>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

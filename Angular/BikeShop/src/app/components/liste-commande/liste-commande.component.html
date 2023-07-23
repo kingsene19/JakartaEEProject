@@ -1,0 +1,39 @@
+<div class="section my-5">
+    <div *ngIf="commandes.length === 0" class="text-center my-5">
+        <h4>Aucune Commande</h4>
+        <button class="btn btn-outline-danger btn-lg mt-3" routerLink="/">Retourner</button>
+    </div>
+    <ng-container *ngIf="commandes.length > 0">
+        <div class="container">
+            <h3 class="text-center">Liste de vos commandes</h3>
+            <div class="row" *ngFor="let commande of commandes">
+              <div class="col-md-12">
+                <div class="jumbotron text-center">          
+                  <p>Numéro Commande : <strong>{{commande.numero}}</strong></p>
+                </div>
+                <table class="table table-striped">
+                  <thead>
+                  <tr>
+                    <th>Image</th>
+                    <th>Titre</th>
+                    <th>Prix</th>
+                    <th>Quantite</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr *ngFor="let p of commande.articleCommandeCollection">
+                    <td>
+                      <img src="../../../assets/img/velos.webp" alt="image" class="img-thumbnail" width="100px">
+                    </td>
+                    <td>{{p.produitId.nom}}</td>
+                    <td>{{p.produitId.prixDepart | currency:'USD'}}</td>
+                    <td>{{p.quantite}}</td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+              <hr/>
+            </div>
+          </div>
+    </ng-container>
+</div>

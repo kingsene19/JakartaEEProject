@@ -1,0 +1,10 @@
+<div class="shop">
+    <div class="shop-img">
+        <img src="../../../assets/img/velos.webp" alt="" width="100">
+    </div>
+    <div class="shop-body">
+        <h3>{{element.nom.split(" ").at(0)}}<br>{{element.nom.split(" ").at(1)}}</h3>
+        <a class="cta-btn" [routerLink]="element.nom.toLowerCase().replace(' ', '-')" [queryParams]="{id: element.id, nom: element.nom}">Voir tout <i class="bi bi-arrow-right-circle-fill"></i></a>
+    </div>
+</div>
+

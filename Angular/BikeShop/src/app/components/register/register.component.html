@@ -1,0 +1,196 @@
+<div class="container">
+    <h4 class="my-2 text-center">Création de compte</h4>
+    <form class="row g-3 mt-3" #formUser="ngForm" (ngSubmit)="ajoutUser()">
+        <div class="col-4 form-floating">
+            <input 
+                id="prenom" 
+                name="prenom" 
+                type="text" 
+                class="form-control" 
+                [(ngModel)]="user.client.prenom"
+                [class.invalid] = "prenomClient.invalid && prenomClient.touched"
+                #prenomClientInput 
+                #prenomClient="ngModel"
+                required="true"
+            />
+            <label for="prenom">Prenom</label>
+            <div *ngIf="prenomClient.invalid && prenomClient.touched" class="text-danger">
+                <small *ngIf="prenomClient.errors?.['required']">Le prénom est obligatoire<br/></small>
+            </div>
+        </div>
+        <div class="col-4 form-floating">
+            <input 
+                id="nom" 
+                name="nom" 
+                type="text" 
+                class="form-control" 
+                [(ngModel)]="user.client.nom"
+                [class.invalid] = "nomClient.invalid && nomClient.touched"
+                #nomClientInput 
+                #nomClient="ngModel"
+                required="true"
+            />
+            <label for="nom">Nom</label>
+            <div *ngIf="nomClient.invalid && nomClient.touched" class="text-danger">
+                <small *ngIf="nomClient.errors?.['required']">Le nom est obligatoire<br/></small>
+            </div>
+        </div>
+        <div class="col-4 form-floating">
+            <input 
+                type="text"
+                class="form-control"
+                id="tel"
+                name="tel"
+                placeholder="" 
+                [(ngModel)]="user.client.telephone"
+                [class.invalid] = "telClient.invalid && telClient.touched"
+                #telClientInput 
+                #telClient="ngModel"
+                required="true"
+            />
+            <label for="tel">Telephone</label>
+            <div *ngIf="telClient.invalid && telClient.touched" class="text-danger">
+                <small *ngIf="telClient.errors?.['required']">Le numero de téléphone est obligatoire<br/></small>
+            </div>
+        </div>
+        <div class="col-12 form-floating">
+            <input 
+                type="text" 
+                class="form-control" 
+                id="adresse" 
+                name="adresse" 
+                placeholder="" 
+                [(ngModel)]="user.client.adresse.adresse"
+                [class.invalid] = "adresseClient.invalid && adresseClient.touched"
+                #adresseClientInput 
+                #adresseClient="ngModel"
+                required="true"
+            />
+            <label for="adresse">Adresse</label>
+            <div *ngIf="adresseClient.invalid && adresseClient.touched" class="text-danger">
+                <small *ngIf="adresseClient.errors?.['required']">L' adresse est obligatoire<br/></small>
+            </div>
+        </div>
+        <div class="col-4 form-floating">
+            <input 
+                type="text" 
+                class="form-control" 
+                id="etat" 
+                name="etat" 
+                placeholder="" 
+                [(ngModel)]="user.client.adresse.etat"
+                [class.invalid] = "etatClient.invalid && etatClient.touched"
+                #etatClientInput 
+                #etatClient="ngModel"
+                required="true"
+            />
+            <label for="etat">Etat</label>
+            <div *ngIf="etatClient.invalid && etatClient.touched" class="text-danger">
+                <small *ngIf="etatClient.errors?.['required']">L'etat est obligatoire<br/></small>
+            </div>
+        </div>
+        <div class="col-4 form-floating">
+            <input 
+                type="text" 
+                class="form-control" 
+                id="code-zip" 
+                name="code-zip" 
+                placeholder="" 
+                [(ngModel)]="user.client.adresse.codeZip"
+                [class.invalid] = "codeZipClient.invalid && codeZipClient.touched"
+                #codeZipClientInput 
+                #codeZipClient="ngModel"
+                required="true"
+            />
+            <label for="code-zip">Code Zip</label>
+            <div *ngIf="codeZipClient.invalid && codeZipClient.touched" class="text-danger">
+                <small *ngIf="codeZipClient.errors?.['required']">Le code zip est obligatoire<br/></small>
+            </div>
+        </div>
+        <div class="col-4 form-floating">
+            <input 
+                type="text" 
+                class="form-control" 
+                id="ville" 
+                name="ville" 
+                placeholder="" 
+                [(ngModel)]="user.client.adresse.ville"
+                [class.invalid] = "villeClient.invalid && villeClient.touched"
+                #villeClientInput 
+                #villeClient="ngModel"
+                required="true"
+            />
+            <label for="ville">Ville</label>
+            <div *ngIf="villeClient.invalid && villeClient.touched" class="text-danger">
+                <small *ngIf="villeClient.errors?.['required']">La ville est obligatoire<br/></small>
+            </div>
+        </div>
+        <div class="col-12 form-floating">
+            <input 
+                id="email"
+                name="email"
+                type="email"
+                class="form-control"
+                [(ngModel)]="user.client.email"
+                [class.invalid] = "emailClient.invalid && emailClient.touched"
+                #emailClientInput 
+                #emailClient="ngModel"
+                required="true"
+            />
+            <label for="email">Email</label>
+            <div *ngIf="emailValide===false" class="text-danger">
+                <small>Cet utilisateur existe déjà</small>
+            </div>
+            <div *ngIf="emailClient.invalid && emailClient.touched" class="text-danger">
+                <small *ngIf="emailClient.errors?.['required']">L'email est obligatoire<br/></small>
+            </div>
+        </div>
+        <div class="col-6 form-floating">
+            <input 
+                type="password" 
+                class="form-control" 
+                id="password"
+                name="password" 
+                password="" 
+                [(ngModel)]="user.password"
+                [class.invalid] = "pwdClient.invalid && pwdClient.touched"
+                #pwdClientInput 
+                #pwdClient="ngModel"
+                required="true"
+                minlength="8"
+                pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$"
+            />
+            <label for="password">Mot de passe</label>
+            <div *ngIf="pwdClient.invalid && pwdClient.touched" class="text-danger">
+                <small *ngIf="pwdClient.errors?.['required']">Le mot de passe est obligatoire<br/></small>
+                <small *ngIf="pwdClient.errors?.['pattern']">Le mot de passe est invalide<br/></small>
+                <small *ngIf="pwdClient.errors?.['minlength']">Le nombre minimum de caractères est {{pwdClient.errors?.['minlength'].requiredLength}}</small>
+            </div>
+        </div>
+        <div class="col-6 form-floating">
+            <input 
+                type="password" 
+                class="form-control" 
+                id="conf-pwd"
+                name="conf-pwd" 
+                password="" 
+                [(ngModel)]="confirmPwd"
+                [class.invalid] = "confPwdClient.invalid && confPwdClient.touched"
+                #confPwdClientInput 
+                #confPwdClient="ngModel"
+                required="true"
+            />
+            <label for="password">Confirmer mot de passe</label>
+            <div *ngIf="pwdValidate===false" class="text-danger">
+                <small>Les mots de passe ne correspondent pas</small>
+            </div>
+            <div *ngIf="confPwdClient.invalid && confPwdClient.touched" class="text-danger">
+                <small *ngIf="confPwdClient.errors?.['required']">Le mot de passe est obligatoire<br/></small>
+            </div>
+        </div>
+        <span>Vous avez déjà un compte? <a class="mt-3 log-link" routerLink="/login">Connectez-vous</a></span>
+        <div class="col-12 text-center mt-3"> 
+            <button type="submit" class="btn btn-outline-danger me-3 mb-3" [disabled]="formUser.form.invalid">S'inscrire</button>
+        </div>
+    </form>
+</div>

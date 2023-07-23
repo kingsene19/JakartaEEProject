@@ -1,0 +1,16 @@
+<div class="container my-3">
+    <h3 class="text-center text-danger mb-4">{{nom}}</h3>
+    <div class="row">
+        <ng-container *ngFor="let produit of products; let i = index;">
+            <div class="col-md-3 col-xs-6">
+                <app-product-card [produit]="produit"/>
+            </div>
+            <div *ngIf="(i + 1) % 4 === 0"></div>
+        </ng-container>
+    </div>
+    <div class="container py-5 home" *ngIf="products==null">
+        <div class="d-flex flex-column align-items-center">
+            <h3>{{errorMsg}}</h3>
+        </div>
+    </div>
+</div>

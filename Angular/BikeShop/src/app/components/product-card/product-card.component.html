@@ -1,0 +1,16 @@
+<div class="product">
+    <div class="product-img">
+        <img src="../../../assets/img/velos.webp" alt="" height="200">
+    </div>
+    <div class="product-body">
+        <p class="product-category">{{produit.categorieId.nom}}</p>
+        <h3 class="product-name">{{produit.nom.slice(0, 20)}}...</h3>
+        <h4 class="product-price">${{produit.prixDepart}}</h4>
+        <div class="product-rating text-muted">
+            {{produit.marqueId.nom}}
+        </div>
+        <div class="product-btns">
+            <button class="quick-view" (click)="redirectToDetailsPage()"><i class="bi bi-eye-fill"></i><span class="tooltipp">Details</span></button>
+        </div>
+    </div>
+</div>

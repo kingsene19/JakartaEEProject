@@ -1,0 +1,53 @@
+<div class="container">
+    <h4 class="my-2 text-center">Connectez Vous</h4>
+    <p class="lead text-muted text-center">
+        BikeShop est une la vitrine Web de la boutique de ventes vélos où vous pouvez passez des commandes 
+        en lignes. Grâce à un navigateur Web, les clients peuvent rechercher un vélo qui leur convient par 
+        catégorie ou marque, puis leur ajouter au panier et enfin passer une commande en utilisant une transaction 
+        par carte de crédit.
+    </p>
+    <form class="d-flex flex-column align-items-center" #formUser="ngForm" (ngSubmit)="login()">
+        <div *ngIf="!loginValid" class="text-danger">
+            <small>Email ou mot de passe incorrect<br/></small>
+        </div>
+        <div class="form-floating mt-3">
+            <input id="email" 
+                name="email" 
+                type="email"
+                [class.invalid] = "emailClient.invalid && emailClient.touched"
+                #emailClientInput 
+                #emailClient="ngModel"
+                required="true"
+                class="form-control" 
+                [(ngModel)]="userInfos.client.email" 
+                
+            />
+            <label for="email">Email</label>
+            <div *ngIf="emailClient.invalid && emailClient.touched" class="text-danger">
+                <small *ngIf="emailClient.errors?.['required']">L'email est obligatoire<br/></small>
+            </div>
+        </div>
+        <div class="form-floating mt-3">
+            <input
+                id="pwd" 
+                name="pwd" 
+                type="password"
+                [class.invalid] = "pwdClient.invalid && pwdClient.touched"
+                #pwdClientInput 
+                #pwdClient="ngModel"
+                class="form-control"
+                [(ngModel)]="userInfos.password" 
+                required="true"
+            />
+            <label for="pwd">Mot de passe</label>
+            <div *ngIf="pwdClient.invalid && pwdClient.touched" class="text-danger">
+                <small *ngIf="pwdClient.errors?.['required']">Le mot de passe est obligatoire<br/></small>
+            </div>
+        </div>
+        <div class="text-center mt-3"> 
+            <button type="submit" class="btn btn-outline-danger me-3" [disabled]="formUser.form.invalid">Connexion</button>
+        </div>
+        <span class="mb-3">Pas encore de compte? <a class="log-link" routerLink="/register">Inscrivez-vous</a></span>
+    </form>
+    
+</div>

@@ -1,0 +1,70 @@
+<div class="container">
+    <div *ngIf="getCart().itemsInCart === 0;" class="text-center my-5">
+      <h4>Votre panier est vide</h4>
+      <button class="btn btn-outline-danger btn-lg mt-3" routerLink="/">Retourner</button>
+    </div>
+    <ng-container *ngIf="getCart().itemsInCart !== 0">
+      <div class="row">
+        <div class="col my-4">
+          <table class="table">
+            <thead class="table-dark">
+            <tr class="text-center">
+              <th>Image</th>
+              <th>Nom</th>
+              <th>Prix</th>
+              <th>Quantite</th>
+              <th>Magasin</th>
+              <th>Sous Total</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let c of getCart().data; let i=index">
+              <td class="d-flex align-items-center justify-content-around">
+                <img src="../../../assets/img/velos04.jpg" alt="{{c.product.nom}}" height="60" class="order-1">
+                <span class="text-danger" style="cursor: pointer;"><i class="bi bi-trash" (click)="cartService.removeItem(c)"></i></span>
+              </td>
+              <td><p>{{c.product.nom}}</p></td>
+              <td>
+                <p>{{c.product.prixDepart | currency:'USD'}}</p>
+              </td>
+              <td>
+                <form>
+                  <div class="value-button" id="decrease" (click)="changeQuantity(c, false)">
+                    <i class="bi bi-dash"></i>
+                  </div>
+                  <input type="number" id="number" [value]="c.numInCart" readonly/>
+                  <div class="value-button" id="increase" (click)="changeQuantity(c, true)">
+                    <i class="bi bi-plus"></i>
+                  </div>
+                </form>
+                <div *ngIf="addNotAuthorized===true" class="row text-danger">
+                  <small>Vous ne pouvez pas ajouter plus que le stock disponible</small>
+                </div>
+              </td>
+              <td>
+                <p>{{c.stock!.magasinId.nom}}</p>
+              </td>
+              <td>
+                <p>{{cartService.calculateSubTotal(c) | currency:'USD'}}</p>
+              </td>
+            </tr>
+            <tr class="border-0">
+              <td style="border: none;"></td>
+              <td></td>
+              <td></td>
+              <td>TOTAL</td>
+              <td>{{getCart().total | currency:'USD'}}</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="col-md-12 d-flex mb-5">
+          <div class="d-flex w-100 justify-content-between flex-sm-column flex-md-row">
+            <a routerLink="/commande" class="btn btn-danger btn-sm order-1" *ngIf="setIsLoggedIn()===true">Payer</a>
+            <a routerLink="/register" class="btn btn-danger btn-sm order-1" *ngIf="setIsLoggedIn()===false">Créer un compte pour passer vos commandes</a>
+            <a routerLink="/" class="btn btn-success btn-sm order-0">Retourner</a>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+</div>

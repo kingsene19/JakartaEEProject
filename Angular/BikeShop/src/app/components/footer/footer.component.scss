@@ -1,0 +1,23 @@
+.footer-links {
+    list-style-type: none;
+}
+  
+.footer-links li+li {
+    margin-top: 15px;
+}
+  
+.footer-links li a {
+    color: #000;
+    text-decoration: none;
+}
+  
+.footer-links li fa-icon {
+    margin-right: 15px;
+    color: #D10024;
+    width: 14px;
+    text-align: center;
+}
+  
+.footer-links li fa-icon:hover {
+    color: #D10024;
+}

@@ -1,0 +1,44 @@
+.navbar-nav {
+    list-style-type: none;
+}
+
+.nav-item {
+    padding-right: 10px;
+}
+
+.nav-link{
+    text-decoration: none;
+    color: dark;
+    font-size: 20px;
+}
+
+.nav-link:hover {
+   color: red;
+   cursor: grab; 
+}
+
+.dropdown-toggle::after {
+  text-decoration: none;
+}
+
+// PANIER
+.shopping-cart {
+  position: relative;
+  display: inline-block;
+  color: black;
+}
+
+.cart {
+  font-size: 30px;
+}
+
+.cart-quantity {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background-color: white;
+  color: black;
+  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: 50%;
+}

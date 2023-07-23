@@ -1,0 +1,126 @@
+<div class="section my-5" *ngIf="cart.total > 0 && orderRegistered===false">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-7">
+              <div class="billing-details">
+                <div class="section-title">
+                    <h3 class="title">Details Livraison</h3>
+                </div>
+                <form class="row g-3 mt-3" #formCommande="ngForm">
+                  <div class="col-4 form-floating">
+                    <input id="prenom" name="prenom" type="text" class="form-control" disabled="true" [value]="clientId.nom"/>
+                    <label for="prenom">Prenom</label>
+                  </div>
+                  <div class="col-4 form-floating">
+                      <input id="nom" name="nom" type="text" class="form-control"disabled="true" [value]="clientId.nom"/>
+                      <label for="nom">Nom</label>
+                  </div>
+                  <div class="col-4 form-floating">
+                    <input type="text" class="form-control" id="tel" name="tel" disabled="true" [value]="clientId.telephone"/>
+                    <label for="tel">Telephone</label>
+                  </div>
+                  <div class="col-12 form-floating">
+                      <input id="email" name="email" type="email" class="form-control"disabled="true" [value]="clientId.email"/>
+                      <label for="email">Adresse Mail</label>
+                  </div>
+                  <div class="col-12 form-floating">
+                      <input type="text" class="form-control" id="adresse" name="adresse" disabled="true" [value]="clientId.adresse.adresse"/>
+                      <label for="adresse">Adresse</label>
+                  </div>
+                  <div class="col-4 form-floating">
+                      <input type="text" class="form-control" id="etat" name="etat" disabled="true" [value]="clientId.adresse.etat"/>
+                      <label for="etat">Etat</label>
+                  </div>
+                  <div class="col-4 form-floating">
+                      <input type="text" class="form-control" id="code-zip" name="code-zip" disabled="true" [value]="clientId.adresse.codeZip"/>
+                      <label for="code-zip">Code Zip</label>
+                  </div>
+                  <div class="col-4 form-floating">
+                      <input type="text" class="form-control" id="ville" name="ville" disabled="true" [value]="clientId.adresse.ville"/>
+                      <label for="ville">Ville</label>
+                  </div>
+                  <div class="col-12 form-floating">
+                    <input 
+                      type="date"
+                      class="form-control" 
+                      id="datelv" 
+                      name="datelv" 
+                      [(ngModel)]="dateLivraisonVoulue" 
+                      required="true"
+                      [class.invalid] = "dlvClient.invalid && dlvClient.touched"
+                      #dlvClientInput 
+                      #dlvClient="ngModel"
+                    />
+                    <label for="datelv">Livraison Voulue</label>
+                    <div *ngIf="dlvClient.invalid && dlvClient.touched" class="text-danger">
+                      <small *ngIf="dlvClient.errors?.['required']">La date est obligatoire<br/></small>
+                    </div>
+                </div>
+                </form>
+              </div>
+            </div>
+            <div class="col-md-5 order-details border border-2 border-secondary-subtle rounded">
+              <div class="section-title text-center">
+                <h3 class="title">Votre Commande</h3>
+              </div>
+              <div class="order-summary">
+                <div class="order-col">
+                  <div><strong>PRODUIT</strong></div>
+                  <div><strong>SOUS TOTAL</strong></div>
+                </div>
+                <div class="order-products">
+                  <div class="order-col" *ngFor="let c of cart.data;">
+                    <div>{{c.numInCart}}x {{c.product.nom}}</div>
+                    <div>{{(c.product.prixDepart*c.numInCart) | currency:'USD'}}</div>
+                  </div>
+                </div>
+                <div class="order-col dropdown-divider">
+                  <div><strong>TOTAL</strong></div>
+                  <div><strong class="order-total">{{cart.total | currency:'USD'}}</strong></div>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-outline-danger btn-sm my-2 btn-block" [disabled]="cart.total <= 0 || formCommande.invalid" (click)="ajoutCommande()">Placer Commande</button>
+            </div>
+  </div>
+</div>
+</div>
+<div class="text-center my-5" *ngIf="cart.total <= 0 && orderRegistered===false">
+  <h4>Votre panier est vide</h4>
+  <button class="btn btn-outline-danger btn-lg mt-3" routerLink="/">Retourner</button>
+</div>
+
+<div class="section my-5" *ngIf="orderRegistered===true">
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="jumbotron text-center">
+        <h1 class="display-3">Merci!</h1>
+        <p class="lead"><strong>Vodre commande a été</strong> ajoutée.</p>
+        <hr>
+        <p>Numéro Commande : <strong>{{commande.numero}}</strong></p>
+      </div>
+
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <th>Image</th>
+          <th>Titre</th>
+          <th>Prix</th>
+          <th>Quantite</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let p of articlesCommande">
+          <td>
+            <img src="../../../assets/img/velos.webp" alt="image" class="img-thumbnail" width="100px">
+          </td>
+          <td>{{p.produitId.nom}}</td>
+          <td>{{p.produitId.prixDepart | currency:'USD'}}</td>
+          <td>{{p.quantite}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</div>

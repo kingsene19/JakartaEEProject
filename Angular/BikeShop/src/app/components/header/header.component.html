@@ -1,0 +1,48 @@
+<header class="bg-dark-subtle py-2 border-bottom border-danger border-4 stick">
+  <nav id="navigation" class="nav">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-3 navbar-brand">
+            <img src="../../../assets/img/logo.png" alt="Logo" width="75" class="d-inline-block align-text-right">BikeShop
+        </div>
+        <div class="col-6">
+          <ul class="navbar-nav d-flex flex-row justify-content-center">
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/" routerLinkActive="text-danger" [routerLinkActiveOptions]="{'exact': true}">Acceuil</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/produits" routerLinkActive="text-danger">Tout</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/categories" routerLinkActive="text-danger">Categories</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/marques" routerLinkActive="text-danger">Marques</a>
+            </li>
+          </ul>
+        </div>
+        <div class="col-md-3 d-flex flex-row align-items-center justify-content-center">
+          <button type="button" class="btn btn-dark me-3" (click)="redirectToLogin()" *ngIf="setIsLoggedIn() === false">Connexion</button>
+          <div class="dropdown me-3" *ngIf="setIsLoggedIn() === true">
+            <a class="btn btn-dark dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="bi bi-person-circle"></i>  Mon Compte
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#" routerLink="/liste-commandes">Commandes</a></li>
+              <li><a class="dropdown-item" href="#" routerLink="/profile">Informations</a></li>
+              <li (click)="logout()"><a class="dropdown-item" href="#">Déconnexion<i class="bi bi-door-open"></i></a></li>
+            </ul>
+          </div>
+          <div>
+            <a class="shopping-cart" routerLink="/cart">
+              <i class="bi bi-cart-fill cart"></i>
+              <span class="cart-quantity">{{getCart().itemsInCart}}</span>
+            </a>
+            </div>
+          </div>
+        </div>
+      </div>
+  </nav>
+</header>
+
+
