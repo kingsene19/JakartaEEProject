@@ -9,11 +9,13 @@ import jakarta.ejb.EJB;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import sn.ept.ventesvelos.entites.Categorie;
 import sn.ept.ventesvelos.entites.Client;
 import sn.ept.ventesvelos.entites.Commande;
 import sn.ept.ventesvelos.facades.ClientFacade;
 
 import java.util.Collection;
+import java.util.List;
 
 
 @Path("/client")
@@ -56,6 +58,65 @@ public class ClientResource {
         return Response
                 .status(Response.Status.OK)
                 .entity(c)
+                .build();
+    }
+
+    @Path("/{id}")
+    @DELETE
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    @Operation(
+            summary = "Suppression de client",
+            description = "Cet endpoint est utilisé pour supprimer les clients de la base de données",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Le client a été supprimé de la base de données"
+                    ),
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "Une erreur s'est produit lors de la suppression du client"
+                    ),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "Le client correspondant à l'id est introuvable",
+                            content = {
+                                    @Content(
+                                            mediaType = MediaType.APPLICATION_JSON,
+                                            examples =  {
+                                                    @ExampleObject(name="Client introuvable")
+                                            }
+                                    )
+                            }
+                    )
+            }
+    )
+    public Response deleteClient(
+            @PathParam("id")
+            @Parameter(description = "L'id du client", required = true)
+            int id
+    ) {
+        Client tmp = (Client) clientFacade.find(id);
+        if (tmp == null) {
+            return Response.status(Response.Status.NOT_FOUND).entity(new Reponse("Le client d'id "+ id +" n'a pas pu être trouvé")).build();
+        }
+        clientFacade.remove(tmp);
+        return Response.status(Response.Status.OK).entity(new Reponse("Le client d'id "+ id +" n'a pas pu être trouvé")).build();
+    }
+
+    @GET
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    @Operation(
+            summary = "Liste des clients",
+            description = "Cet endpoint est utilisé pour obtenir l'ensemble des clients disponibles"
+    )
+    public Response getClientList() {
+        List<Client> clients = clientFacade.findAll();
+        if (clients == null ) {
+            return Response.status(Response.Status.NOT_FOUND).entity(new Reponse("Un problème s'est produit lors de la récupération")).build();
+        }
+        return Response
+                .status(Response.Status.OK)
+                .entity(clients)
                 .build();
     }
 

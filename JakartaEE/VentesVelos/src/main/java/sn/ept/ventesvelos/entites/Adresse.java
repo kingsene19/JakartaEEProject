@@ -1,7 +1,6 @@
 package sn.ept.ventesvelos.entites;
 
 import jakarta.persistence.Embeddable;
-
 import java.util.Objects;
 
 @Embeddable

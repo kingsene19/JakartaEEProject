@@ -71,4 +71,67 @@ public class CommandeTest {
             .statusCode(404)
             .contentType(MediaType.APPLICATION_XML);
     }
+
+    @Test
+    public void testDeleteCommandeXML() {
+        int id = 1616;
+        given()
+                .header("Accept", MediaType.APPLICATION_XML)
+                .pathParam("id", id)
+                .when()
+                .delete("/commande/{id}")
+                .then()
+                .statusCode(200)
+                .contentType(MediaType.APPLICATION_XML);
+    }
+
+    @Test
+    public void testDeleteCommandeNotFoundJSON() {
+        int id = 1700;
+        given()
+                .header("Accept", MediaType.APPLICATION_JSON)
+                .pathParam("id", id)
+                .when()
+                .delete("/commande/{id}")
+                .then()
+                .statusCode(404)
+                .contentType(MediaType.APPLICATION_JSON);
+    }
+
+    @Test
+    public void testDeleteCommandeNotFoundXML() {
+        int id=1700;
+        given()
+                .header("Accept", MediaType.APPLICATION_XML)
+                .pathParam("id", id)
+                .when()
+                .delete("/commande/{id}")
+                .then()
+                .statusCode(404)
+                .contentType(MediaType.APPLICATION_XML);
+    }
+
+    @Test
+    public void testDeleteCommandeJSON() {
+        int id = 1600;
+        given()
+                .header("Accept", MediaType.APPLICATION_JSON)
+                .pathParam("id", id)
+                .when()
+                .delete("/commande/{id}")
+                .then()
+                .statusCode(200)
+                .contentType(MediaType.APPLICATION_JSON);
+    }
+    @Test
+    public void testGetCommandeList() {
+        given()
+            .header("Accept", MediaType.APPLICATION_JSON)
+        .when()
+            .get("/commande")
+        .then()
+            .statusCode(200)
+            .contentType(MediaType.APPLICATION_JSON)
+            .body("$", hasSize(1614));
+    }
 }

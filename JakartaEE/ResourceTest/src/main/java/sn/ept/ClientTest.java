@@ -4,7 +4,6 @@ import io.restassured.RestAssured;
 import jakarta.ws.rs.core.MediaType;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 
@@ -13,6 +12,58 @@ public class ClientTest {
     @BeforeAll
     public static void setup() {
         RestAssured.baseURI = "http://localhost:8080/VentesVelos-1.0-SNAPSHOT/api";
+    }
+
+    @Test
+    public void testDeleteClientXML() {
+        int id = 1411;
+        given()
+                .header("Accept", MediaType.APPLICATION_XML)
+                .pathParam("id", id)
+                .when()
+                .delete("/client/{id}")
+                .then()
+                .statusCode(200)
+                .contentType(MediaType.APPLICATION_XML);
+    }
+
+    @Test
+    public void testDeleteClientNotFoundJSON() {
+        int id = 1600;
+        given()
+                .header("Accept", MediaType.APPLICATION_JSON)
+                .pathParam("id", id)
+                .when()
+                .delete("/client/{id}")
+                .then()
+                .statusCode(404)
+                .contentType(MediaType.APPLICATION_JSON);
+    }
+
+    @Test
+    public void testDeleteClientNotFoundXML() {
+        int id=1601;
+        given()
+                .header("Accept", MediaType.APPLICATION_XML)
+                .pathParam("id", id)
+                .when()
+                .delete("/client/{id}")
+                .then()
+                .statusCode(404)
+                .contentType(MediaType.APPLICATION_XML);
+    }
+
+    @Test
+    public void testDeleteClientJSON() {
+        int id = 1410;
+        given()
+                .header("Accept", MediaType.APPLICATION_JSON)
+                .pathParam("id", id)
+                .when()
+                .delete("/client/{id}")
+                .then()
+                .statusCode(200)
+                .contentType(MediaType.APPLICATION_JSON);
     }
 
     @Test
@@ -51,7 +102,7 @@ public class ClientTest {
             .body("client.prenom", is("John"));
     }
     @Test
-    public void testGetCommandeListJSON() {
+    public void testGetCommandeList() {
         int clientId = 159;
         given()
             .pathParam("id", clientId)
@@ -89,5 +140,16 @@ public class ClientTest {
             .contentType(MediaType.APPLICATION_XML);
     }
 
+    @Test
+    public void testGetClientList() {
+        given()
+            .header("Accept", MediaType.APPLICATION_JSON)
+        .when()
+            .get("/client")
+        .then()
+            .statusCode(200)
+            .contentType(MediaType.APPLICATION_JSON)
+            .body("$", hasSize(1455));
+    }
 }
 
