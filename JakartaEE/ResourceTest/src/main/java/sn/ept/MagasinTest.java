@@ -44,7 +44,7 @@ public class MagasinTest {
 
     @Test
     public void testAddMagasin() {
-        String requestBody = "{\"id\":4,\"email\":\"bikeshop@shop.com\",\"nom\":\"BikeShop\",\"telephone\":\"780901020\"}";
+        String requestBody = "{\"email\":\"bikeshop@shop.com\",\"nom\":\"BikeShop\",\"telephone\":\"780901020\"}";
 
         given()
             .contentType(MediaType.APPLICATION_JSON)

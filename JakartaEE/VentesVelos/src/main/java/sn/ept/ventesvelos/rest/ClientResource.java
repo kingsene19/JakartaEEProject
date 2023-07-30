@@ -49,9 +49,13 @@ public class ClientResource {
             )
             Client c
     ) {
-        Client tmp = (Client) clientFacade.find(c.getId());
-        if (tmp != null) {
-            clientFacade.edit(c);
+        if (c.getId() != null) {
+            Client tmp = (Client) clientFacade.find(c.getId());
+            if (tmp != null) {
+                clientFacade.edit(c);
+            } else {
+                clientFacade.create(c);
+            }
         } else {
             clientFacade.create(c);
         }

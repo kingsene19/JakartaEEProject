@@ -9,10 +9,7 @@ import jakarta.ejb.EJB;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import sn.ept.ventesvelos.entites.Categorie;
-import sn.ept.ventesvelos.entites.Marque;
-import sn.ept.ventesvelos.entites.Produit;
-import sn.ept.ventesvelos.entites.Stock;
+import sn.ept.ventesvelos.entites.*;
 import sn.ept.ventesvelos.facades.ProduitFacade;
 
 import java.util.HashMap;
@@ -161,23 +158,27 @@ public class ProduitResource {
                     )
             }
     )
-    public Response addMarque(
+    public Response addProduit(
             @Parameter(
                     name = "Produit",
                     description = "Le produit que vous souhaitez ajouter",
                     required = true
             )
-            Categorie c
+            Produit p
     ) {
-        Produit tmp = (Produit) produitFacade.find(c.getId());
-        if (tmp != null) {
-            produitFacade.edit(c);
+        if (p.getId() != null) {
+            Produit tmp = (Produit) produitFacade.find(p.getId());
+            if (tmp != null) {
+                produitFacade.edit(p);
+            } else {
+                produitFacade.create(p);
+            }
         } else {
-            produitFacade.create(c);
+            produitFacade.create(p);
         }
         return Response
                 .status(Response.Status.OK)
-                .entity(c)
+                .entity(p)
                 .build();
     }
 }

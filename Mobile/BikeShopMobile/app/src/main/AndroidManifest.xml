@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+
+    <application
+        android:name=".utils.MyApplication"
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.AppCompat.NoActionBar"
+        android:usesCleartextTraffic="true"
+        tools:targetApi="31">
+        <service
+            android:name=".services.LocalisationUpdateService"
+            android:enabled="true"
+            android:exported="true"></service>
+
+        <activity
+            android:name=".activities.stock.AddStock"
+            android:exported="false" />
+        <activity
+            android:name=".activities.produit.AddProduit"
+            android:exported="false" />
+        <activity
+            android:name=".activities.marque.AddMarque"
+            android:exported="false" />
+        <activity
+            android:name=".activities.magasin.AddMagasin"
+            android:exported="false" />
+        <activity
+            android:name=".activities.employe.AddEmploye"
+            android:exported="false" />
+        <activity
+            android:name=".activities.commande.AddCommande"
+            android:exported="false" />
+        <activity
+            android:name=".activities.client.AddClient"
+            android:exported="false" />
+        <activity
+            android:name=".activities.categorie.AddCategorie"
+            android:exported="false" />
+        <activity
+            android:name=".activities.article.AddArticle"
+            android:exported="false" />
+        <activity
+            android:name=".activities.stock.DetailsStocks"
+            android:exported="false" />
+        <activity
+            android:name=".activities.produit.DetailsProduits"
+            android:exported="false" />
+        <activity
+            android:name=".activities.marque.DetailsMarques"
+            android:exported="false" />
+        <activity
+            android:name=".activities.magasin.DetailsMagasins"
+            android:exported="false" />
+        <activity
+            android:name=".activities.employe.DetailsEmployes"
+            android:exported="false" />
+        <activity
+            android:name=".activities.commande.DetailsCommandes"
+            android:exported="false" />
+        <activity
+            android:name=".activities.client.DetailsClients"
+            android:exported="false" />
+        <activity
+            android:name=".activities.categorie.DetailsCategories"
+            android:exported="false" />
+        <activity
+            android:name=".activities.article.DetailsArticles"
+            android:exported="false" />
+        <activity
+            android:name=".activities.notification.NotificationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.stock.ListStocks"
+            android:exported="false" />
+        <activity
+            android:name=".activities.produit.ListProduits"
+            android:exported="false" />
+        <activity
+            android:name=".activities.marque.ListMarques"
+            android:exported="false" />
+        <activity
+            android:name=".activities.magasin.ListMagasins"
+            android:exported="false" />
+        <activity
+            android:name=".activities.employe.ListEmployes"
+            android:exported="false" />
+        <activity
+            android:name=".activities.commande.ListCommandes"
+            android:exported="false" />
+        <activity
+            android:name=".activities.client.ListClients"
+            android:exported="false" />
+        <activity
+            android:name=".activities.categorie.ListCategories"
+            android:exported="false" />
+        <activity
+            android:name=".activities.article.ListArticles"
+            android:exported="false" />
+
+        <service
+            android:name=".services.ApiService"
+            android:exported="false" />
+        <service
+            android:name=".services.StockService"
+            android:exported="false"
+            android:stopWithTask="false" />
+
+        <activity
+            android:name=".activities.HomeActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

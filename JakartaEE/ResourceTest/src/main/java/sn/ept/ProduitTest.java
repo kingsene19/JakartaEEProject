@@ -47,7 +47,7 @@ public class ProduitTest {
 
     @Test
     public void testGetStockListNotFoundJSON() {
-        int produitId = 322;
+        int produitId = 323;
         given()
             .header("Accept", MediaType.APPLICATION_JSON)
             .pathParam("id", produitId)
@@ -60,7 +60,7 @@ public class ProduitTest {
 
     @Test
     public void testAddProduit() {
-        String requestBody = "{\"id\": 1500,\"nom\": \"Bikes\",\"annee_model\":2016,\"prix_depart\":399.99,\"categorie_id\":7,\"marque_id\":9}";
+        String requestBody = "{\"nom\": \"Bikes\",\"annee_model\":2016,\"prix_depart\":399.99,\"categorie_id\":7,\"marque_id\":9}";
 
         given()
                 .contentType(MediaType.APPLICATION_JSON)
@@ -71,7 +71,7 @@ public class ProduitTest {
                 .then()
                 .statusCode(200)
                 .contentType(MediaType.APPLICATION_JSON)
-                .body("id", is(1500))
+                .body("id", is(322))
                 .body("nom", is("Bikes"));
     }
 

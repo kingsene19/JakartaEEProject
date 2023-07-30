@@ -15,7 +15,7 @@ export interface CommandeModelServer {
 }
 
 export interface ClientDetailsModelServer {
-    id: number;
+    id: number | null;
     prenom: String;
     nom: String;
     telephone: String;

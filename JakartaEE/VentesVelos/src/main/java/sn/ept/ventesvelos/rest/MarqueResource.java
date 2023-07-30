@@ -9,8 +9,6 @@ import jakarta.ejb.EJB;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import sn.ept.ventesvelos.entites.Categorie;
-import sn.ept.ventesvelos.entites.Commande;
 import sn.ept.ventesvelos.entites.Marque;
 import sn.ept.ventesvelos.entites.Produit;
 import sn.ept.ventesvelos.facades.MarqueFacade;
@@ -163,17 +161,21 @@ public class MarqueResource {
                     description = "La marque que vous souhaitez ajouter",
                     required = true
             )
-            Categorie c
+            Marque m
     ) {
-        Marque tmp = (Marque) marqueFacade.find(c.getId());
-        if (tmp != null) {
-            marqueFacade.edit(c);
+        if (m.getId() != null) {
+            Marque tmp = (Marque) marqueFacade.find(m.getId());
+            if (tmp != null) {
+                marqueFacade.edit(m);
+            } else {
+                marqueFacade.create(m);
+            }
         } else {
-            marqueFacade.create(c);
+            marqueFacade.create(m);
         }
         return Response
                 .status(Response.Status.OK)
-                .entity(c)
+                .entity(m)
                 .build();
     }
 

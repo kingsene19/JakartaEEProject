@@ -5,24 +5,18 @@
               xmlns:f="http://xmlns.jcp.org/jsf/core">
     <div class="card m-2">
         <h:form>
-            <p:menubar>
-                <p:menuitem style="width: 80px;" value="Acceuil" action="#{redirectionBean.redirectToPage('')}"/>
-                <p:menuitem style="width: 100px;" value="Articles" action="#{redirectionBean.redirectToPage('article-pf.xhtml')}"/>
-                <p:menuitem style="width: 100px;" value="Categories"  action="#{redirectionBean.redirectToPage('categorie-pf.xhtml')}"/>
-                <p:menuitem style="width: 80px;" value="Marques" action="#{redirectionBean.redirectToPage('marque-pf.xhtml')}"/>
-                <p:menuitem style="width: 80px;" value="Clients" action="#{redirectionBean.redirectToPage('client-pf.xhtml')}"/>
-                <p:menuitem style="width: 100px;" value="Commandes" action="#{redirectionBean.redirectToPage('commande-pf.xhtml')}"/>
-                <p:menuitem style="width: 100px;" value="Employes" action="#{redirectionBean.redirectToPage('employe-pf.xhtml')}"/>
-                <p:menuitem style="width: 100px;" value="Produits" action="#{redirectionBean.redirectToPage('produit-pf.xhtml')}"/>
-                <p:menuitem style="width: 100px;" value="Magasins" action="#{redirectionBean.redirectToPage('magasin-pf.xhtml')}"/>
-                <p:menuitem style="width: 80px;" value="Stocks" action="#{redirectionBean.redirectToPage('stock-pf.xhtml')}"/>
-
-                <f:facet name="options">
-                    <div class="ui-input-icon-left mr-2">
-                        <i class="pi pi-fw pi-search" />
-                        <p:inputText placeholder="Recherche"/>
-                    </div>
-                </f:facet>
+            <p:menubar styleClass="centered-menu">
+                <p:menuitem value="Acceuil" action="#{redirectionBean.redirectToPage('')}" icon="pi pi-home" style="font-size: 14px;"/>
+                <p:menuitem value="Articles" action="#{redirectionBean.redirectToPage('article-pf.xhtml')}" icon="pi pi-file" style="font-size: 14px;"/>
+                <p:menuitem value="Categories" action="#{redirectionBean.redirectToPage('categorie-pf.xhtml')}" icon="pi pi-list" style="font-size: 14px;"/>
+                <p:menuitem value="Marques" action="#{redirectionBean.redirectToPage('marque-pf.xhtml')}" icon="pi pi-tag" style="font-size: 14px;"/>
+                <p:menuitem value="Clients" action="#{redirectionBean.redirectToPage('client-pf.xhtml')}" icon="pi pi-users" />
+                <p:menuitem value="Commandes" action="#{redirectionBean.redirectToPage('commande-pf.xhtml')}" icon="pi pi-shopping-cart" style="font-size: 14px;"/>
+                <p:menuitem value="Employes" action="#{redirectionBean.redirectToPage('employe-pf.xhtml')}" icon="pi pi-user" style="font-size: 14px;"/>
+                <p:menuitem value="Produits" action="#{redirectionBean.redirectToPage('produit-pf.xhtml')}" icon="pi pi-cubes" style="font-size: 14px;"/>
+                <p:menuitem value="Magasins" action="#{redirectionBean.redirectToPage('magasin-pf.xhtml')}" icon="pi pi-map-marker" style="font-size: 14px;"/>
+                <p:menuitem value="Stocks" action="#{redirectionBean.redirectToPage('stock-pf.xhtml')}" icon="pi pi-chart-bar" style="font-size: 14px;"/>
+                <p:menuitem value="Localisations" action="#{redirectionBean.redirectToPage('localisation-pf.xhtml')}" icon="pi pi-map" style="font-size: 14px;"/>
             </p:menubar>
         </h:form>
     </div>

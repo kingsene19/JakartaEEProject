@@ -13,19 +13,17 @@ export class UsersService {
 
   private STORAGE_KEY = "users";
   private COMMANDE_STORAGE = "num_commande";
-  private CLIENT_STORAGE = "num_client";
   private users = this.getUsers();
 
   constructor(private apiService: ApiService, private cartService: CartService, private authService: AuthService) { }
 
   saveUser(user: UserModelServer): void {
-    localStorage.setItem(this.COMMANDE_STORAGE, JSON.stringify(1616));
-    localStorage.setItem(this.CLIENT_STORAGE, JSON.stringify(1458));
-    user.client.id = this.getClientNumeroStart();
+    user.client.id = null;
     user.client.commandeCollection = [];
     user.cart = this.cartService.getItems();
     this.apiService.addClient(user.client).subscribe(
       result => {
+        user.client.id = result.id;
         this.users.push(user);
         localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.users));
         this.authService.login(user);
@@ -33,8 +31,7 @@ export class UsersService {
       error => {
         console.log(`Une erreur s'est produite: ${error}`);
       }
-    )
-    this.setClientNumeroStart();
+    );
   }
 
   updateUser(user: UserModelServer):void {
@@ -68,15 +65,6 @@ export class UsersService {
 
   setCommandeNumeroStart() {
     localStorage.setItem(this.COMMANDE_STORAGE, JSON.stringify(this.getCommandeNumeroStart() + 1));
-  }
-
-  getClientNumeroStart() {
-    const clientStart = localStorage.getItem(this.CLIENT_STORAGE);
-    return clientStart ? JSON.parse(clientStart) : 1458;
-  }
-
-  setClientNumeroStart() {
-    localStorage.setItem(this.CLIENT_STORAGE, JSON.stringify(this.getClientNumeroStart() + 1));
   }
 
 }

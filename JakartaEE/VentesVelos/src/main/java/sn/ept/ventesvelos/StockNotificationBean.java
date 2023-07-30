@@ -17,10 +17,10 @@ public class StockNotificationBean {
      private StockFacade stockFacade;
 
      public String getStockInformation() {
-         String stockInformation = "";
+         String stockInformation = "L'état actuel des stocks est le suivant: \n\n";
          List<Stock> stockList = stockFacade.findAll();
          for (Stock e: stockList) {
-             stockInformation += e.toString() + "\n\n\n";
+             stockInformation += "Le stock au magasin" + e.getMagasinId().getNom() + " pour le produit " + e.getProduitId().getNom() + " est de " + e.getQuantite() + "\n\n\n";
          }
          return stockInformation;
      }

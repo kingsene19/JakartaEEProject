@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
-import static org.hamcrest.Matchers.hasSize;
 
 public class EmployeTest {
 
@@ -31,7 +30,7 @@ public class EmployeTest {
 
     @Test
     public void testDeleteEmploye() {
-        int id = 1460;
+        int id = 1458;
         given()
             .header("Accept", MediaType.APPLICATION_JSON)
             .pathParam("id", id)
@@ -44,7 +43,7 @@ public class EmployeTest {
 
     @Test
     public void testAddEmploye() {
-        String requestBody = "{\"id\": 1460,\"prenom\": \"John\", \"nom\": \"Doe\", \"telephone\": \"780901020\", \"email\": \"test@example.com\",\"actif\":1,\"magasin_id\":1}";
+        String requestBody = "{\"prenom\": \"John\", \"nom\": \"Doe\", \"telephone\": \"780901020\", \"email\": \"test@example.com\",\"actif\":1,\"magasin_id\":1}";
 
         given()
                 .contentType(MediaType.APPLICATION_JSON)
@@ -55,7 +54,7 @@ public class EmployeTest {
                 .then()
                 .statusCode(200)
                 .contentType(MediaType.APPLICATION_JSON)
-                .body("id", equalTo(1460))
+                .body("id", equalTo(1458))
                 .body("nom", is("Doe"))
                 .body("prenom", is("John"));
     }

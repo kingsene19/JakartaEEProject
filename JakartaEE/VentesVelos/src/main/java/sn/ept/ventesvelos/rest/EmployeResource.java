@@ -9,8 +9,6 @@ import jakarta.ejb.EJB;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import org.eclipse.persistence.sessions.coordination.Command;
-import sn.ept.ventesvelos.entites.Commande;
 import sn.ept.ventesvelos.entites.Employe;
 import sn.ept.ventesvelos.facades.EmployeFacade;
 
@@ -49,9 +47,13 @@ public class EmployeResource {
             )
             Employe e
     ) {
-        Employe tmp = (Employe) employeFacade.find(e.getId());
-        if (tmp != null) {
-            employeFacade.edit(e);
+        if (e.getId() != null) {
+            Employe tmp = (Employe) employeFacade.find(e.getId());
+            if (tmp != null) {
+                employeFacade.edit(e);
+            } else {
+                employeFacade.create(e);
+            }
         } else {
             employeFacade.create(e);
         }

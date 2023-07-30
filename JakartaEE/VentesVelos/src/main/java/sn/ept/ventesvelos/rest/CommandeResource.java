@@ -46,9 +46,13 @@ public class CommandeResource {
             )
             Commande c
     ) {
-        Commande tmp = (Commande) commandeFacade.find(c.getNumero());
-        if (tmp != null) {
-            commandeFacade.edit(c);
+        if (c.getNumero() != null) {
+            Commande tmp = (Commande) commandeFacade.find(c.getNumero());
+            if (tmp != null) {
+                commandeFacade.edit(c);
+            } else {
+                commandeFacade.create(c);
+            }
         } else {
             commandeFacade.create(c);
         }

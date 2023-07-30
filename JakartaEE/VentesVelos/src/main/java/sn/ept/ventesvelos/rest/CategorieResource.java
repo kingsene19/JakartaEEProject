@@ -9,8 +9,6 @@ import jakarta.ejb.EJB;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import sn.ept.ventesvelos.entites.ArticleCommande;
-import sn.ept.ventesvelos.entites.ArticleCommandePK;
 import sn.ept.ventesvelos.entites.Categorie;
 import sn.ept.ventesvelos.entites.Produit;
 import sn.ept.ventesvelos.facades.CategorieFacade;
@@ -113,9 +111,13 @@ public class CategorieResource {
             )
             Categorie c
     ) {
-        Categorie tmp = (Categorie) categorieFacade.find(c.getId());
-        if (tmp != null) {
-            categorieFacade.edit(c);
+        if (c.getId() != null) {
+            Categorie tmp = (Categorie) categorieFacade.find(c.getId());
+            if (tmp != null) {
+                categorieFacade.edit(c);
+            } else {
+                categorieFacade.create(c);
+            }
         } else {
             categorieFacade.create(c);
         }

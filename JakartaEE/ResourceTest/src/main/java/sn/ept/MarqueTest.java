@@ -44,7 +44,7 @@ public class MarqueTest {
 
     @Test
     public void testGetProduitListNotFound() {
-        int marqueId = 10;
+        int marqueId = 11;
         given()
             .pathParam("id", marqueId)
             .header("Accept", MediaType.APPLICATION_JSON)
@@ -109,7 +109,7 @@ public class MarqueTest {
 
     @Test
     public void testAddMarqueJSON() {
-        String requestBody = "{\"id\": 1500, \"nom\": \"Bikes\"}";
+        String requestBody = "{\"nom\": \"Bikes\"}";
 
         given()
                 .contentType(MediaType.APPLICATION_JSON)
@@ -120,7 +120,7 @@ public class MarqueTest {
                 .then()
                 .statusCode(200)
                 .contentType(MediaType.APPLICATION_JSON)
-                .body("id", is(1500))
+                .body("id", is(10))
                 .body("nom", is("Bikes"));
     }
 }

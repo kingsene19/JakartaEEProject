@@ -17,7 +17,7 @@ public class CommandeTest {
 
     @Test
     public void testAddCommandeJSON() {
-        String requestBody = "{\"numero\": 1616,\"date_commande\": \"2023-06-09\", \"date_livraison_voulue\": \"2023-06-30\", \"statut\": 3," +
+        String requestBody = "{\"date_commande\": \"2023-06-09\", \"date_livraison_voulue\": \"2023-06-30\", \"statut\": 3," +
                 " \"clientId\": {\"id\": 136}, \"vendeurId\": {\"id\": 1453}, \"magasinId\": {\"id\": 3}}";
 
         given()

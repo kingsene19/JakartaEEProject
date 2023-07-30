@@ -44,7 +44,7 @@ public class CategorieTest {
 
     @Test
     public void testGetProduitListNotFound() {
-        int categorieId = 8;
+        int categorieId = 1500;
         given()
             .pathParam("id", categorieId)
             .header("Accept", MediaType.APPLICATION_JSON)
@@ -70,7 +70,7 @@ public class CategorieTest {
 
     @Test
     public void testDeleteCategorieXML() {
-        int id = 1501;
+        int id = 8;
         given()
             .header("Accept", MediaType.APPLICATION_XML)
             .pathParam("id", id)
@@ -109,7 +109,7 @@ public class CategorieTest {
 
     @Test
     public void testAddCategorieJSON() {
-        String requestBody = "{\"id\": 1500, \"nom\": \"Bikes\"}";
+        String requestBody = "{\"nom\": \"Bikes\"}";
 
         given()
             .contentType(MediaType.APPLICATION_JSON)
@@ -120,12 +120,12 @@ public class CategorieTest {
         .then()
             .statusCode(200)
             .contentType(MediaType.APPLICATION_JSON)
-            .body("id", is(1500))
+            .body("id", is(9))
             .body("nom", is("Bikes"));
     }
     @Test
     public void testAddCategorieXML() {
-        String requestBody = "<categorie><id>1501</id><nom>Bikes Old</nom></categorie>";
+        String requestBody = "<categorie><nom>Bikes Old</nom></categorie>";
 
         given()
             .contentType(MediaType.APPLICATION_XML)
@@ -136,7 +136,7 @@ public class CategorieTest {
         .then()
             .statusCode(200)
             .contentType(MediaType.APPLICATION_XML)
-            .body("categorie.id", is("1501"))
+            .body("categorie.id", is("8"))
             .body("categorie.nom", is("Bikes Old"));
     }
 }

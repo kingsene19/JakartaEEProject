@@ -1,7 +1,7 @@
 import { CommandeModelServer } from "./commande.model";
 
 export interface ClientModelServer {
-    id: number;
+    id: number | null;
     prenom: String;
     nom: String;
     telephone: String;

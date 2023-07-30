@@ -92,10 +92,10 @@
                         <p:inputNumber id="qte" value="#{articleMBean.selectedArticle.quantite}" required="true" decimalPlaces="0"/>
                         <p:outputLabel for="remise" value="Remise:"/>
                         <p:inputNumber id="remise" value="#{articleMBean.selectedArticle.remise}" required="true" decimalSeparator="."/>
-                        <p:outputLabel for="ligne" value="Ligne:"/>
-                        <p:inputNumber id="ligne" value="#{articleMBean.selectedArticle.articleCommandePK.ligne}" required="true" decimalPlaces="0"/>
-                        <p:outputLabel for="commande" value="Commande:"/>
-                        <p:selectOneMenu id="commande" value="#{articleMBean.selectedArticle.commandeId}" required="true">
+                        <p:outputLabel for="ligne" value="Ligne:" rendered="#{articleMBean.selectedArticle.articleCommandePK.ligne == 0}"/>
+                        <p:inputNumber id="ligne" value="#{articleMBean.selectedArticle.articleCommandePK.ligne}" required="true" decimalPlaces="0" rendered="#{articleMBean.selectedArticle.articleCommandePK.ligne == 0}"/>
+                        <p:outputLabel for="commande" value="Commande:" rendered="#{empty articleMBean.selectedArticle.commandeId}"/>
+                        <p:selectOneMenu id="commande" value="#{articleMBean.selectedArticle.commandeId}" required="true" rendered="#{empty articleMBean.selectedArticle.commandeId}">
                            <f:converter converterId="commandeConverter"/>
                            <f:selectItem itemLabel="Choisir une commande" itemValue=""/>
                            <f:selectItems value="#{commandeMBean.commandes}" var="commande"

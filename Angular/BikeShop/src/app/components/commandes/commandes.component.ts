@@ -149,7 +149,6 @@ export class CommandesComponent implements OnInit {
   
 
   resetUserInfos() {
-    console.log("Here");
     this.cartService.clearCart();
     this.authService.getUserData().cart = this.cartService.getItems();
     this.commande.articleCommandeCollection = this.articlesCommande;

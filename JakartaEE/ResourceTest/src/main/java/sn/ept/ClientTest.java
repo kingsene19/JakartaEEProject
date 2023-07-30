@@ -68,7 +68,7 @@ public class ClientTest {
 
     @Test
     public void testAddClientJSON() {
-        String requestBody = "{\"id\": 1460,\"prenom\": \"John\", \"nom\": \"Doe\", \"telephone\": \"780901020\", \"email\": \"test@example.com\"}";
+        String requestBody = "{\"prenom\": \"John\", \"nom\": \"Doe\", \"telephone\": \"780901020\", \"email\": \"test@example.com\"}";
 
         given()
             .contentType(MediaType.APPLICATION_JSON)
@@ -79,14 +79,14 @@ public class ClientTest {
         .then()
             .statusCode(200)
             .contentType(MediaType.APPLICATION_JSON)
-            .body("id", equalTo(1460))
+            .body("id", equalTo(1458))
             .body("nom", is("Doe"))
             .body("prenom", is("John"));
     }
 
     @Test
     public void testAddClientXML() {
-        String requestBody = "<client><id>1461</id><nom>Doe</nom><prenom>John</prenom><telephone>767810912</telephone><email>test@example.com</email></client>";
+        String requestBody = "<client><nom>Doe</nom><prenom>John</prenom><telephone>767810912</telephone><email>test@example.com</email></client>";
 
         given()
             .contentType(MediaType.APPLICATION_XML)
@@ -97,7 +97,7 @@ public class ClientTest {
         .then()
             .statusCode(200)
             .contentType(MediaType.APPLICATION_XML)
-            .body("client.id", is("1461"))
+            .body("client.id", is("1459"))
             .body("client.nom", is("Doe"))
             .body("client.prenom", is("John"));
     }
@@ -116,7 +116,7 @@ public class ClientTest {
     }
     @Test
     public void testGetCommandeListNotFoundJSON() {
-        int clientId = 1462;
+        int clientId = 1500;
         given()
             .pathParam("id", clientId)
             .header("Accept", MediaType.APPLICATION_JSON)
@@ -129,7 +129,7 @@ public class ClientTest {
 
     @Test
     public void testGetCommandeListNotFoundXML() {
-        int clientId = 1462;
+        int clientId = 1500;
         given()
             .pathParam("id", clientId)
             .header("Accept", MediaType.APPLICATION_XML)

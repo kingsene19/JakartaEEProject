@@ -9,7 +9,6 @@ import jakarta.ejb.EJB;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import sn.ept.ventesvelos.entites.Employe;
 import sn.ept.ventesvelos.entites.Magasin;
 import sn.ept.ventesvelos.facades.MagasinFacade;
 
@@ -48,9 +47,13 @@ public class MagasinResource {
             )
             Magasin m
     ) {
-        Magasin tmp = (Magasin) magasinFacade.find(m.getId());
-        if (tmp != null) {
-            magasinFacade.edit(m);
+        if (m.getId() != null) {
+            Magasin tmp = (Magasin) magasinFacade.find(m.getId());
+            if (tmp != null) {
+                magasinFacade.edit(m);
+            } else {
+                magasinFacade.create(m);
+            }
         } else {
             magasinFacade.create(m);
         }
